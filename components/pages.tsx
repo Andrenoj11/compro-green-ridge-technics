@@ -1,84 +1,883 @@
 import Link from "next/link";
-import { ArrowUpRight, ArrowLeft, Check, ShieldCheck, Crosshair, UsersRound, Leaf, MapPin, Mail, Clock3, FileCheck2, GraduationCap, BriefcaseBusiness, Gauge, Thermometer, Wind, Zap, AudioLines, ScanLine } from "lucide-react";
-import { b, text, url, services, projects, articles, pageInfo, common, company, type Locale } from "@/lib/content";
-import { Photo, ButtonLink, TextLink, Eyebrow, PageHero, SectionHeading, ServiceIcon, CallToAction } from "./ui";
+import {
+  ArrowUpRight,
+  ArrowLeft,
+  Check,
+  ShieldCheck,
+  Crosshair,
+  UsersRound,
+  Leaf,
+  MapPin,
+  Mail,
+  Clock3,
+  FileCheck2,
+  GraduationCap,
+  BriefcaseBusiness,
+  Gauge,
+  Thermometer,
+  Wind,
+  Zap,
+  AudioLines,
+  ScanLine,
+} from "lucide-react";
+import {
+  b,
+  text,
+  url,
+  services,
+  projects,
+  articles,
+  pageInfo,
+  common,
+  company,
+  type Locale,
+} from "@/lib/content";
+import {
+  Photo,
+  ButtonLink,
+  TextLink,
+  Eyebrow,
+  PageHero,
+  SectionHeading,
+  ServiceIcon,
+  CallToAction,
+} from "./ui";
 import { ProjectGrid, Gallery, ContactForm } from "./interactive";
 
-function Note({ children }: { children: React.ReactNode }) { return <div className="content-note"><span aria-hidden="true">i</span><p>{children}</p></div>; }
+function Note({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="content-note">
+      <span aria-hidden="true">i</span>
+      <p>{children}</p>
+    </div>
+  );
+}
 
 function About({ locale }: { locale: Locale }) {
   const id = locale === "id";
-  return <><section className="section"><div className="container about-story"><div className="about-photo" data-reveal><Photo src="/images/engineering.jpg" locale={locale} /><div className="photo-caption">{text(common.photo, locale)}<span>GREEN RIDGE TECHNICS</span></div></div><div className="about-story-copy" data-reveal><Eyebrow>{id ? "LANDASAN KAMI" : "OUR FOUNDATION"}</Eyebrow><h2>{id ? "Teknis dalam pendekatan.\nManusiawi dalam kolaborasi." : "Technical in our approach.\nHuman in our collaboration."}</h2><p>{id ? "Green Ridge Technics dirancang sebagai mitra teknis untuk kebutuhan testing, inspection, dan commissioning. Fokus kami adalah membantu menghubungkan rencana desain dengan kinerja fasilitas yang dapat diverifikasi." : "Green Ridge Technics is shaped as a technical partner for testing, inspection, and commissioning. Our focus is connecting design intent with facility performance that can be verified."}</p><p>{id ? "Kami percaya hasil yang baik lahir dari komunikasi yang terbuka, pemahaman yang menyeluruh, dan perhatian terhadap detail. Dari ruang server hingga gedung komersial, setiap sistem memiliki kebutuhan yang layak dipahami dengan cermat." : "We believe good results come from open communication, thorough understanding, and attention to detail. From server rooms to commercial buildings, every system has requirements worth understanding carefully."}</p><Note>{id ? "Profil, sejarah, dan informasi tim perusahaan sedang dipersiapkan. Narasi ini merupakan konsep awal untuk presentasi." : "The company profile, history, and team information are being prepared. This narrative is an initial presentation concept."}</Note></div></div></section><section className="section section-tinted"><div className="container"><SectionHeading locale={locale} label={b("NILAI YANG MEMANDU", "VALUES THAT GUIDE US")} title={b("Cara berpikir kami.\nCara bekerja kami.", "How we think.\nHow we work.")} /><div className="values-grid">{[
-    { Icon: Crosshair, title: b("Presisi", "Precision"), copy: b("Memahami detail, mempertanyakan asumsi, dan mengutamakan pengukuran yang bermakna.", "Understanding details, questioning assumptions, and prioritizing meaningful measurements.") },
-    { Icon: ShieldCheck, title: b("Integritas", "Integrity"), copy: b("Menyampaikan temuan dengan jelas dan menjaga transparansi dalam setiap proses.", "Communicating findings clearly and maintaining transparency throughout the process.") },
-    { Icon: UsersRound, title: b("Kolaborasi", "Collaboration"), copy: b("Bekerja bersama pemilik, konsultan, dan kontraktor untuk memahami tujuan yang sama.", "Working with owners, consultants, and contractors to understand shared objectives.") },
-    { Icon: Leaf, title: b("Keberlanjutan", "Sustainability"), copy: b("Mempertimbangkan efisiensi dan kinerja jangka panjang dalam setiap rekomendasi.", "Considering efficiency and long-term performance in every recommendation.") },
-  ].map(v => <div className="value-card" key={v.title.en} data-reveal><v.Icon size={30} strokeWidth={1.3} /><h3>{text(v.title, locale)}</h3><p>{text(v.copy, locale)}</p></div>)}</div></div></section><section className="section"><div className="container vision-grid"><div><span className="mini-label">{id ? "VISI KONSEPTUAL" : "OUR DRAFT VISION"}</span><h2>{id ? "Masa depan fasilitas\nyang lebih andal." : "A future of\nmore reliable facilities."}</h2></div><p>{id ? "Menjadi mitra teknis yang membantu pemilik dan pengelola fasilitas membuat keputusan berdasarkan pemahaman yang lebih baik tentang sistem mereka—melalui pengujian, verifikasi, dan dokumentasi yang cermat." : "To be a technical partner that helps facility owners and operators make decisions grounded in a better understanding of their systems, through careful testing, verification, and documentation."}</p></div></section></>;
+  return (
+    <>
+      <section className="section">
+        <div className="container about-story">
+          <div className="about-photo" data-reveal>
+            <Photo src="/images/engineering.jpg" locale={locale} />
+            <div className="photo-caption">
+              {text(common.photo, locale)}
+              <span>GREEN RIDGE TECHNICS</span>
+            </div>
+          </div>
+          <div className="about-story-copy" data-reveal>
+            <Eyebrow>{id ? "LANDASAN KAMI" : "OUR FOUNDATION"}</Eyebrow>
+            <h2>
+              {id
+                ? "Teknis dalam pendekatan.\nManusiawi dalam kolaborasi."
+                : "Technical in our approach.\nHuman in our collaboration."}
+            </h2>
+            <p>
+              {id
+                ? "Green Ridge Technics dirancang sebagai mitra teknis untuk kebutuhan testing, inspection, dan commissioning. Fokus kami adalah membantu menghubungkan rencana desain dengan kinerja fasilitas yang dapat diverifikasi."
+                : "Green Ridge Technics is shaped as a technical partner for testing, inspection, and commissioning. Our focus is connecting design intent with facility performance that can be verified."}
+            </p>
+            <p>
+              {id
+                ? "Kami percaya hasil yang baik lahir dari komunikasi yang terbuka, pemahaman yang menyeluruh, dan perhatian terhadap detail. Dari ruang server hingga gedung komersial, setiap sistem memiliki kebutuhan yang layak dipahami dengan cermat."
+                : "We believe good results come from open communication, thorough understanding, and attention to detail. From server rooms to commercial buildings, every system has requirements worth understanding carefully."}
+            </p>
+            <Note>
+              {id
+                ? "Profil, sejarah, dan informasi tim perusahaan sedang dipersiapkan. Narasi ini merupakan konsep awal untuk presentasi."
+                : "The company profile, history, and team information are being prepared. This narrative is an initial presentation concept."}
+            </Note>
+          </div>
+        </div>
+      </section>
+      <section className="section section-tinted">
+        <div className="container">
+          <SectionHeading
+            locale={locale}
+            label={b("NILAI YANG MEMANDU", "VALUES THAT GUIDE US")}
+            title={b(
+              "Cara berpikir kami.\nCara bekerja kami.",
+              "How we think.\nHow we work.",
+            )}
+          />
+          <div className="values-grid">
+            {[
+              {
+                Icon: Crosshair,
+                title: b("Presisi", "Precision"),
+                copy: b(
+                  "Memahami detail, mempertanyakan asumsi, dan mengutamakan pengukuran yang bermakna.",
+                  "Understanding details, questioning assumptions, and prioritizing meaningful measurements.",
+                ),
+              },
+              {
+                Icon: ShieldCheck,
+                title: b("Integritas", "Integrity"),
+                copy: b(
+                  "Menyampaikan temuan dengan jelas dan menjaga transparansi dalam setiap proses.",
+                  "Communicating findings clearly and maintaining transparency throughout the process.",
+                ),
+              },
+              {
+                Icon: UsersRound,
+                title: b("Kolaborasi", "Collaboration"),
+                copy: b(
+                  "Bekerja bersama pemilik, konsultan, dan kontraktor untuk memahami tujuan yang sama.",
+                  "Working with owners, consultants, and contractors to understand shared objectives.",
+                ),
+              },
+              {
+                Icon: Leaf,
+                title: b("Keberlanjutan", "Sustainability"),
+                copy: b(
+                  "Mempertimbangkan efisiensi dan kinerja jangka panjang dalam setiap rekomendasi.",
+                  "Considering efficiency and long-term performance in every recommendation.",
+                ),
+              },
+            ].map((v) => (
+              <div className="value-card" key={v.title.en} data-reveal>
+                <v.Icon size={30} strokeWidth={1.3} />
+                <h3>{text(v.title, locale)}</h3>
+                <p>{text(v.copy, locale)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container vision-grid">
+          <div>
+            <span className="mini-label">
+              {id ? "VISI KONSEPTUAL" : "OUR DRAFT VISION"}
+            </span>
+            <h2>
+              {id
+                ? "Masa depan fasilitas\nyang lebih andal."
+                : "A future of\nmore reliable facilities."}
+            </h2>
+          </div>
+          <p>
+            {id
+              ? "Menjadi mitra teknis yang membantu pemilik dan pengelola fasilitas membuat keputusan berdasarkan pemahaman yang lebih baik tentang sistem mereka—melalui pengujian, verifikasi, dan dokumentasi yang cermat."
+              : "To be a technical partner that helps facility owners and operators make decisions grounded in a better understanding of their systems, through careful testing, verification, and documentation."}
+          </p>
+        </div>
+      </section>
+    </>
+  );
 }
 
 function Services({ locale }: { locale: Locale }) {
-  return <section className="section"><div className="container service-list">{services.map(s => <article className="service-detail-card" key={s.slug} data-reveal><div className="service-detail-image"><Photo src={s.image} locale={locale} /><span>{s.number}</span></div><div className="service-detail-copy"><div className="service-label"><ServiceIcon name={s.icon} /><span>{text(s.name, locale)}</span></div><h2>{text(s.tagline, locale)}</h2><p>{text(s.description, locale)}</p><ul className="scope-list">{s.scope.slice(0, 3).map(item => <li key={item.en}><Check size={16} />{text(item, locale)}</li>)}</ul><TextLink href={url(locale, `services/${s.slug}`)}>{locale === "id" ? "Jelajahi layanan" : "Explore this service"}</TextLink></div></article>)}</div></section>;
+  return (
+    <section className="section">
+      <div className="container service-list">
+        {services.map((s) => (
+          <article className="service-detail-card" key={s.slug} data-reveal>
+            <div className="service-detail-image">
+              <Photo src={s.image} locale={locale} />
+              <span>{s.number}</span>
+            </div>
+            <div className="service-detail-copy">
+              <div className="service-label">
+                <ServiceIcon name={s.icon} />
+                <span>{text(s.name, locale)}</span>
+              </div>
+              <h2>{text(s.tagline, locale)}</h2>
+              <p>{text(s.description, locale)}</p>
+              <ul className="scope-list">
+                {s.scope.slice(0, 3).map((item) => (
+                  <li key={item.en}>
+                    <Check size={16} />
+                    {text(item, locale)}
+                  </li>
+                ))}
+              </ul>
+              <TextLink href={url(locale, `services/${s.slug}`)}>
+                {locale === "id" ? "Jelajahi layanan" : "Explore this service"}
+              </TextLink>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
 }
 
-export function ServiceDetail({ locale, slug }: { locale: Locale; slug: string }) {
-  const s = services.find(item => item.slug === slug)!;
+export function ServiceDetail({
+  locale,
+  slug,
+}: {
+  locale: Locale;
+  slug: string;
+}) {
+  const s = services.find((item) => item.slug === slug)!;
   const id = locale === "id";
-  return <><PageHero locale={locale} eyebrow={s.name} title={s.tagline} description={s.description} /><div className="container detail-hero-image"><Photo src={s.image} locale={locale} priority /><span className="image-tag">{text(common.photo, locale)}</span></div><section className="section"><div className="container detail-layout"><div className="detail-body"><Eyebrow>{id ? "TENTANG LAYANAN" : "ABOUT THE SERVICE"}</Eyebrow><h2>{id ? "Memahami kebutuhan.\nMemverifikasi kinerja." : "Understand the need.\nVerify the performance."}</h2><p>{text(s.detail, locale)}</p><h3>{id ? "Ruang lingkup layanan" : "Service scope"}</h3><ul className="large-scope-list">{s.scope.map((item, index) => <li key={item.en}><span>0{index + 1}</span>{text(item, locale)}<ArrowUpRight size={18} /></li>)}</ul><h3>{id ? "Apa yang Anda dapatkan" : "What you receive"}</h3><p>{text(s.deliverable, locale)}</p><Note>{id ? "Rincian layanan merupakan konsep sementara. Ketersediaan, metode, dan ruang lingkup final akan dikonfirmasi bersama tim perusahaan." : "Service details are a draft concept. Availability, methodology, and final scope will be confirmed with the company team."}</Note></div><aside className="detail-sidebar"><span className="mini-label">{id ? "MARI DISKUSIKAN" : "LET'S DISCUSS"}</span><h3>{id ? "Apa yang dibutuhkan fasilitas Anda?" : "What does your facility need?"}</h3><p>{id ? "Siapkan jenis fasilitas, lokasi, jadwal, dan dokumen desain yang tersedia." : "Prepare your facility type, location, schedule, and any available design documents."}</p><ButtonLink href={url(locale, "contact")}>{id ? "Mulai konsultasi" : "Start a conversation"}</ButtonLink><div className="sidebar-links"><h4>{id ? "Layanan lainnya" : "Other services"}</h4>{services.filter(item => item.slug !== slug).map(item => <Link href={url(locale, `services/${item.slug}`)} key={item.slug}>{text(item.name, locale)}<ArrowUpRight size={16} /></Link>)}</div></aside></div></section><CallToAction locale={locale} /></>;
+  return (
+    <>
+      <PageHero
+        locale={locale}
+        eyebrow={s.name}
+        title={s.tagline}
+        description={s.description}
+      />
+      <div className="container detail-hero-image">
+        <Photo src={s.image} locale={locale} priority />
+        <span className="image-tag">{text(common.photo, locale)}</span>
+      </div>
+      <section className="section">
+        <div className="container detail-layout">
+          <div className="detail-body">
+            <Eyebrow>{id ? "TENTANG LAYANAN" : "ABOUT THE SERVICE"}</Eyebrow>
+            <h2>
+              {id
+                ? "Memahami kebutuhan.\nMemverifikasi kinerja."
+                : "Understand the need.\nVerify the performance."}
+            </h2>
+            <p>{text(s.detail, locale)}</p>
+            <h3>{id ? "Ruang lingkup layanan" : "Service scope"}</h3>
+            <ul className="large-scope-list">
+              {s.scope.map((item, index) => (
+                <li key={item.en}>
+                  <span>0{index + 1}</span>
+                  {text(item, locale)}
+                  <ArrowUpRight size={18} />
+                </li>
+              ))}
+            </ul>
+            <h3>{id ? "Apa yang Anda dapatkan" : "What you receive"}</h3>
+            <p>{text(s.deliverable, locale)}</p>
+            <Note>
+              {id
+                ? "Rincian layanan merupakan konsep sementara. Ketersediaan, metode, dan ruang lingkup final akan dikonfirmasi bersama tim perusahaan."
+                : "Service details are a draft concept. Availability, methodology, and final scope will be confirmed with the company team."}
+            </Note>
+          </div>
+          <aside className="detail-sidebar">
+            <span className="mini-label">
+              {id ? "MARI DISKUSIKAN" : "LET'S DISCUSS"}
+            </span>
+            <h3>
+              {id
+                ? "Apa yang dibutuhkan fasilitas Anda?"
+                : "What does your facility need?"}
+            </h3>
+            <p>
+              {id
+                ? "Siapkan jenis fasilitas, lokasi, jadwal, dan dokumen desain yang tersedia."
+                : "Prepare your facility type, location, schedule, and any available design documents."}
+            </p>
+            <ButtonLink href={url(locale, "contact")}>
+              {id ? "Mulai konsultasi" : "Start a conversation"}
+            </ButtonLink>
+            <div className="sidebar-links">
+              <h4>{id ? "Layanan lainnya" : "Other services"}</h4>
+              {services
+                .filter((item) => item.slug !== slug)
+                .map((item) => (
+                  <Link
+                    href={url(locale, `services/${item.slug}`)}
+                    key={item.slug}
+                  >
+                    {text(item.name, locale)}
+                    <ArrowUpRight size={16} />
+                  </Link>
+                ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+      <CallToAction locale={locale} />
+    </>
+  );
 }
 
 function ProjectList({ locale }: { locale: Locale }) {
-  return <section className="section"><div className="container"><Note>{locale === "id" ? "Semua studi di halaman ini adalah contoh penerapan layanan, bukan proyek yang telah dikerjakan Green Ridge Technics. Data klien, lokasi, dan pencapaian aktual akan ditambahkan setelah dikonfirmasi." : "All studies on this page illustrate service applications, not projects delivered by Green Ridge Technics. Actual clients, locations, and achievements will be added after confirmation."}</Note><ProjectGrid locale={locale} /></div></section>;
+  return (
+    <section className="section">
+      <div className="container">
+        <Note>
+          {locale === "id"
+            ? "Semua studi di halaman ini adalah contoh penerapan layanan, bukan proyek yang telah dikerjakan Green Ridge Technics. Data klien, lokasi, dan pencapaian aktual akan ditambahkan setelah dikonfirmasi."
+            : "All studies on this page illustrate service applications, not projects delivered by Green Ridge Technics. Actual clients, locations, and achievements will be added after confirmation."}
+        </Note>
+        <ProjectGrid locale={locale} />
+      </div>
+    </section>
+  );
 }
 
-export function ProjectDetail({ locale, slug }: { locale: Locale; slug: string }) {
-  const project = projects.find(p => p.slug === slug)!;
-  const service = services.find(s => s.slug === project.service)!;
+export function ProjectDetail({
+  locale,
+  slug,
+}: {
+  locale: Locale;
+  slug: string;
+}) {
+  const project = projects.find((p) => p.slug === slug)!;
+  const service = services.find((s) => s.slug === project.service)!;
   const id = locale === "id";
-  return <><PageHero locale={locale} eyebrow={project.sector} title={project.name} description={project.description} /><div className="container detail-hero-image"><Photo src={project.image} locale={locale} priority /><span className="image-tag">{id ? "STUDI ILUSTRATIF" : "ILLUSTRATIVE STUDY"}</span></div><section className="section"><div className="container detail-layout"><div className="detail-body"><Note>{text(common.demo, locale)}. {id ? "Tidak ada klaim klien, lokasi, atau hasil aktual pada studi ini." : "No actual client, location, or results are claimed in this study."}</Note><h2>{id ? "Tantangan yang dipahami.\nPendekatan yang terarah." : "Challenges understood.\nA purposeful approach."}</h2><p>{text(project.description, locale)}</p><h3>{id ? "Ruang lingkup ilustratif" : "Illustrative scope"}</h3><p>{text(project.scope, locale)}</p><h3>{id ? "Alur pendekatan" : "The approach"}</h3><ol className="numbered-list"><li>{id ? "Meninjau dokumen desain dan menyepakati kriteria penerimaan bersama tim proyek." : "Review design documents and agree on acceptance criteria with the project team."}</li><li>{id ? "Memeriksa kesiapan instalasi dan menyusun urutan verifikasi yang sesuai." : "Assess installation readiness and establish a suitable verification sequence."}</li><li>{id ? "Melaksanakan pengukuran atau inspeksi sesuai lingkup dan mendokumentasikan temuan." : "Perform measurements or inspections within scope and document findings."}</li><li>{id ? "Menyusun laporan untuk mendukung tindak lanjut dan keputusan serah terima." : "Prepare a report to support follow-up actions and handover decisions."}</li></ol><TextLink href={url(locale, "projects")}>{id ? "Kembali ke semua studi" : "Back to all studies"}</TextLink></div><aside className="detail-sidebar"><span className="mini-label">{id ? "SEKTOR" : "SECTOR"}</span><h3>{text(project.sector, locale)}</h3><div className="sidebar-links"><h4>{id ? "Layanan terkait" : "Related service"}</h4><Link href={url(locale, `services/${service.slug}`)}>{text(service.name, locale)}<ArrowUpRight size={17} /></Link></div><ButtonLink href={url(locale, "contact")}>{id ? "Diskusikan proyek serupa" : "Discuss a similar project"}</ButtonLink></aside></div></section><CallToAction locale={locale} /></>;
+  return (
+    <>
+      <PageHero
+        locale={locale}
+        eyebrow={project.sector}
+        title={project.name}
+        description={project.description}
+      />
+      <div className="container detail-hero-image">
+        <Photo src={project.image} locale={locale} priority />
+        <span className="image-tag">
+          {id ? "STUDI ILUSTRATIF" : "ILLUSTRATIVE STUDY"}
+        </span>
+      </div>
+      <section className="section">
+        <div className="container detail-layout">
+          <div className="detail-body">
+            <Note>
+              {text(common.demo, locale)}.{" "}
+              {id
+                ? "Tidak ada klaim klien, lokasi, atau hasil aktual pada studi ini."
+                : "No actual client, location, or results are claimed in this study."}
+            </Note>
+            <h2>
+              {id
+                ? "Tantangan yang dipahami.\nPendekatan yang terarah."
+                : "Challenges understood.\nA purposeful approach."}
+            </h2>
+            <p>{text(project.description, locale)}</p>
+            <h3>{id ? "Ruang lingkup ilustratif" : "Illustrative scope"}</h3>
+            <p>{text(project.scope, locale)}</p>
+            <h3>{id ? "Alur pendekatan" : "The approach"}</h3>
+            <ol className="numbered-list">
+              <li>
+                {id
+                  ? "Meninjau dokumen desain dan menyepakati kriteria penerimaan bersama tim proyek."
+                  : "Review design documents and agree on acceptance criteria with the project team."}
+              </li>
+              <li>
+                {id
+                  ? "Memeriksa kesiapan instalasi dan menyusun urutan verifikasi yang sesuai."
+                  : "Assess installation readiness and establish a suitable verification sequence."}
+              </li>
+              <li>
+                {id
+                  ? "Melaksanakan pengukuran atau inspeksi sesuai lingkup dan mendokumentasikan temuan."
+                  : "Perform measurements or inspections within scope and document findings."}
+              </li>
+              <li>
+                {id
+                  ? "Menyusun laporan untuk mendukung tindak lanjut dan keputusan serah terima."
+                  : "Prepare a report to support follow-up actions and handover decisions."}
+              </li>
+            </ol>
+            <TextLink href={url(locale, "projects")}>
+              {id ? "Kembali ke semua studi" : "Back to all studies"}
+            </TextLink>
+          </div>
+          <aside className="detail-sidebar">
+            <span className="mini-label">{id ? "SEKTOR" : "SECTOR"}</span>
+            <h3>{text(project.sector, locale)}</h3>
+            <div className="sidebar-links">
+              <h4>{id ? "Layanan terkait" : "Related service"}</h4>
+              <Link href={url(locale, `services/${service.slug}`)}>
+                {text(service.name, locale)}
+                <ArrowUpRight size={17} />
+              </Link>
+            </div>
+            <ButtonLink href={url(locale, "contact")}>
+              {id ? "Diskusikan proyek serupa" : "Discuss a similar project"}
+            </ButtonLink>
+          </aside>
+        </div>
+      </section>
+      <CallToAction locale={locale} />
+    </>
+  );
 }
 
 function Insights({ locale }: { locale: Locale }) {
-  return <section className="section"><div className="container"><div className="article-grid">{articles.map(article => <Link className="article-card" key={article.slug} href={url(locale, `insights/${article.slug}`)} data-reveal><div className="article-image"><Photo src={article.image} locale={locale} /><span className="article-arrow"><ArrowUpRight size={20} /></span></div><div className="article-meta"><span>{text(article.category, locale)}</span><span>{article.read} {locale === "id" ? "menit baca" : "min read"}</span></div><h2>{text(article.title, locale)}</h2><p>{text(article.excerpt, locale)}</p></Link>)}</div><p className="photo-note">{locale === "id" ? "Artikel pengantar untuk presentasi website. Konten teknis final akan ditinjau bersama tim perusahaan." : "Introductory articles for the website presentation. Final technical content will be reviewed with the company team."}</p></div></section>;
+  return (
+    <section className="section">
+      <div className="container">
+        <div className="article-grid">
+          {articles.map((article) => (
+            <Link
+              className="article-card"
+              key={article.slug}
+              href={url(locale, `insights/${article.slug}`)}
+              data-reveal
+            >
+              <div className="article-image">
+                <Photo src={article.image} locale={locale} />
+                <span className="article-arrow">
+                  <ArrowUpRight size={20} />
+                </span>
+              </div>
+              <div className="article-meta">
+                <span>{text(article.category, locale)}</span>
+                <span>
+                  {article.read} {locale === "id" ? "menit baca" : "min read"}
+                </span>
+              </div>
+              <h2>{text(article.title, locale)}</h2>
+              <p>{text(article.excerpt, locale)}</p>
+            </Link>
+          ))}
+        </div>
+        <p className="photo-note">
+          {locale === "id"
+            ? "Artikel pengantar untuk presentasi website. Konten teknis final akan ditinjau bersama tim perusahaan."
+            : "Introductory articles for the website presentation. Final technical content will be reviewed with the company team."}
+        </p>
+      </div>
+    </section>
+  );
 }
 
-export function ArticleDetail({ locale, slug }: { locale: Locale; slug: string }) {
-  const article = articles.find(a => a.slug === slug)!;
-  return <><section className="article-heading container"><Link className="back-link" href={url(locale, "insights")}><ArrowLeft size={16} />{locale === "id" ? "Semua wawasan" : "All insights"}</Link><Eyebrow>{text(article.category, locale)}</Eyebrow><h1>{text(article.title, locale)}</h1><p>{text(article.excerpt, locale)}</p><div className="article-byline"><span className="author-mark">GR</span><span>Green Ridge Journal</span><span>·</span><Clock3 size={14} /><span>{article.read} {locale === "id" ? "menit baca" : "min read"}</span></div></section><div className="container detail-hero-image"><Photo src={article.image} locale={locale} priority /></div><section className="section article-body">{article.paragraphs.map((paragraph, i) => <p key={i}>{text(paragraph, locale)}</p>)}<Note>{locale === "id" ? "Artikel ini merupakan materi pengantar dalam versi presentasi. Penerapan teknis harus mempertimbangkan kebutuhan dan kondisi setiap proyek." : "This article is introductory material for the presentation version. Technical application should consider each project's requirements and conditions."}</Note><div className="article-end"><span>GREEN RIDGE JOURNAL</span><TextLink href={url(locale, "contact")}>{locale === "id" ? "Diskusikan kebutuhan Anda" : "Discuss your requirements"}</TextLink></div></section><CallToAction locale={locale} /></>;
+export function ArticleDetail({
+  locale,
+  slug,
+}: {
+  locale: Locale;
+  slug: string;
+}) {
+  const article = articles.find((a) => a.slug === slug)!;
+  return (
+    <>
+      <section className="article-heading container">
+        <Link className="back-link" href={url(locale, "insights")}>
+          <ArrowLeft size={16} />
+          {locale === "id" ? "Semua wawasan" : "All insights"}
+        </Link>
+        <Eyebrow>{text(article.category, locale)}</Eyebrow>
+        <h1>{text(article.title, locale)}</h1>
+        <p>{text(article.excerpt, locale)}</p>
+        <div className="article-byline">
+          <span className="author-mark">GR</span>
+          <span>Green Ridge Journal</span>
+          <span>·</span>
+          <Clock3 size={14} />
+          <span>
+            {article.read} {locale === "id" ? "menit baca" : "min read"}
+          </span>
+        </div>
+      </section>
+      <div className="container detail-hero-image">
+        <Photo src={article.image} locale={locale} priority />
+      </div>
+      <section className="section article-body">
+        {article.paragraphs.map((paragraph, i) => (
+          <p key={i}>{text(paragraph, locale)}</p>
+        ))}
+        <Note>
+          {locale === "id"
+            ? "Artikel ini merupakan materi pengantar dalam versi presentasi. Penerapan teknis harus mempertimbangkan kebutuhan dan kondisi setiap proyek."
+            : "This article is introductory material for the presentation version. Technical application should consider each project's requirements and conditions."}
+        </Note>
+        <div className="article-end">
+          <span>GREEN RIDGE JOURNAL</span>
+          <TextLink href={url(locale, "contact")}>
+            {locale === "id"
+              ? "Diskusikan kebutuhan Anda"
+              : "Discuss your requirements"}
+          </TextLink>
+        </div>
+      </section>
+      <CallToAction locale={locale} />
+    </>
+  );
 }
 
 function Equipment({ locale }: { locale: Locale }) {
   const items = [
-    { Icon: Wind, name: b("Airflow Measurement", "Airflow Measurement"), detail: b("Instrumen untuk mengukur kecepatan dan volume aliran udara pada sistem ventilasi.", "Instruments for measuring air velocity and volume in ventilation systems."), examples: "Airflow hood · Anemometer" },
-    { Icon: Gauge, name: b("Pressure Measurement", "Pressure Measurement"), detail: b("Pengukuran tekanan dan perbedaan tekanan untuk memahami kondisi operasi sistem.", "Pressure and differential pressure measurement to understand operating conditions."), examples: "Differential manometer · Pressure gauge" },
-    { Icon: Thermometer, name: b("Thermal Measurement", "Thermal Measurement"), detail: b("Pemantauan temperatur dan kelembapan untuk evaluasi lingkungan dan peralatan.", "Temperature and humidity monitoring for environmental and equipment evaluation."), examples: "Thermohygrometer · Thermal imaging" },
-    { Icon: Zap, name: b("Electrical Measurement", "Electrical Measurement"), detail: b("Kategori instrumen untuk evaluasi parameter kelistrikan sesuai ruang lingkup pengujian.", "Instrument categories for assessing electrical parameters within the agreed test scope."), examples: "Power analyzer · Multimeter" },
-    { Icon: AudioLines, name: b("Environmental Measurement", "Environmental Measurement"), detail: b("Evaluasi kondisi lingkungan kerja dan respons peralatan terhadap parameter operasi.", "Assessment of working environments and equipment response to operating parameters."), examples: "Sound level meter · Vibration meter" },
-    { Icon: ScanLine, name: b("Documentation & Tracking", "Documentation & Tracking"), detail: b("Pencatatan terstruktur untuk pelacakan temuan, tindak lanjut, dan hasil verifikasi.", "Structured records for tracking findings, follow-up actions, and verification results."), examples: "Digital checklists · Issue registers" },
+    {
+      Icon: Wind,
+      name: b("Airflow Measurement", "Airflow Measurement"),
+      detail: b(
+        "Instrumen untuk mengukur kecepatan dan volume aliran udara pada sistem ventilasi.",
+        "Instruments for measuring air velocity and volume in ventilation systems.",
+      ),
+      examples: "Airflow hood · Anemometer",
+    },
+    {
+      Icon: Gauge,
+      name: b("Pressure Measurement", "Pressure Measurement"),
+      detail: b(
+        "Pengukuran tekanan dan perbedaan tekanan untuk memahami kondisi operasi sistem.",
+        "Pressure and differential pressure measurement to understand operating conditions.",
+      ),
+      examples: "Differential manometer · Pressure gauge",
+    },
+    {
+      Icon: Thermometer,
+      name: b("Thermal Measurement", "Thermal Measurement"),
+      detail: b(
+        "Pemantauan temperatur dan kelembapan untuk evaluasi lingkungan dan peralatan.",
+        "Temperature and humidity monitoring for environmental and equipment evaluation.",
+      ),
+      examples: "Thermohygrometer · Thermal imaging",
+    },
+    {
+      Icon: Zap,
+      name: b("Electrical Measurement", "Electrical Measurement"),
+      detail: b(
+        "Kategori instrumen untuk evaluasi parameter kelistrikan sesuai ruang lingkup pengujian.",
+        "Instrument categories for assessing electrical parameters within the agreed test scope.",
+      ),
+      examples: "Power analyzer · Multimeter",
+    },
+    {
+      Icon: AudioLines,
+      name: b("Environmental Measurement", "Environmental Measurement"),
+      detail: b(
+        "Evaluasi kondisi lingkungan kerja dan respons peralatan terhadap parameter operasi.",
+        "Assessment of working environments and equipment response to operating parameters.",
+      ),
+      examples: "Sound level meter · Vibration meter",
+    },
+    {
+      Icon: ScanLine,
+      name: b("Documentation & Tracking", "Documentation & Tracking"),
+      detail: b(
+        "Pencatatan terstruktur untuk pelacakan temuan, tindak lanjut, dan hasil verifikasi.",
+        "Structured records for tracking findings, follow-up actions, and verification results.",
+      ),
+      examples: "Digital checklists · Issue registers",
+    },
   ];
-  return <section className="section"><div className="container"><Note>{locale === "id" ? "Daftar berikut menjelaskan kategori instrumen secara umum. Inventaris, merek, dan status kalibrasi milik perusahaan masih menunggu konfirmasi." : "The following describes general instrument categories. Company inventory, brands, and calibration status await confirmation."}</Note><div className="equipment-grid">{items.map(item => <article className="equipment-card" key={item.name.en} data-reveal><item.Icon size={33} strokeWidth={1.3} /><h2>{text(item.name, locale)}</h2><p>{text(item.detail, locale)}</p><span>{item.examples}</span></article>)}</div></div></section>;
+  return (
+    <section className="section">
+      <div className="container">
+        <Note>
+          {locale === "id"
+            ? "Daftar berikut menjelaskan kategori instrumen secara umum. Inventaris, merek, dan status kalibrasi milik perusahaan masih menunggu konfirmasi."
+            : "The following describes general instrument categories. Company inventory, brands, and calibration status await confirmation."}
+        </Note>
+        <div className="equipment-grid">
+          {items.map((item) => (
+            <article className="equipment-card" key={item.name.en} data-reveal>
+              <item.Icon size={33} strokeWidth={1.3} />
+              <h2>{text(item.name, locale)}</h2>
+              <p>{text(item.detail, locale)}</p>
+              <span>{item.examples}</span>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function Certifications({ locale }: { locale: Locale }) {
   const id = locale === "id";
-  return <><section className="section"><div className="container"><div className="status-panel"><div className="status-icon"><FileCheck2 size={40} strokeWidth={1} /></div><div><span className="status-pill">{id ? "INFORMASI DALAM PERSIAPAN" : "INFORMATION IN PREPARATION"}</span><h2>{id ? "Dokumentasi resmi,\nsegera di sini." : "Official documentation,\ncoming here soon."}</h2><p>{id ? "Informasi sertifikasi perusahaan, kredensial personel, dan dokumen pendukung akan ditampilkan setelah diterima serta diverifikasi oleh tim. Saat ini, halaman ini tidak menyatakan kepemilikan sertifikasi atau akreditasi apa pun." : "Company certifications, professional credentials, and supporting documents will be shown after the team receives and verifies them. This page does not currently claim any certification or accreditation."}</p><ButtonLink href={url(locale, "contact")}>{id ? "Diskusikan persyaratan proyek" : "Discuss project requirements"}</ButtonLink></div></div></div></section><section className="section section-tinted"><div className="container"><SectionHeading locale={locale} label={b("FOKUS PENGEMBANGAN", "DEVELOPMENT FOCUS")} title={b("Kualitas sebagai proses berkelanjutan.", "Quality as an ongoing process.")} /><div className="values-grid three">{[{ Icon: FileCheck2, title: b("Proses terdokumentasi", "Documented processes"), copy: b("Catatan yang konsisten membantu menjaga keterlacakan setiap langkah verifikasi.", "Consistent records help keep each verification step traceable.") }, { Icon: GraduationCap, title: b("Pengembangan kompetensi", "Professional development"), copy: b("Pengetahuan dan keterampilan perlu terus tumbuh mengikuti kebutuhan fasilitas.", "Knowledge and skills should keep developing alongside facility requirements.") }, { Icon: ShieldCheck, title: b("Praktik yang bertanggung jawab", "Responsible practices"), copy: b("Ruang lingkup, kesiapan, dan kebutuhan keselamatan ditinjau sebelum pelaksanaan.", "Scope, readiness, and safety requirements are reviewed before work begins.") }].map(v => <div className="value-card" key={v.title.en}><v.Icon size={28} strokeWidth={1.3} /><h3>{text(v.title, locale)}</h3><p>{text(v.copy, locale)}</p></div>)}</div></div></section></>;
+  return (
+    <>
+      <section className="section">
+        <div className="container">
+          <div className="status-panel">
+            <div className="status-icon">
+              <FileCheck2 size={40} strokeWidth={1} />
+            </div>
+            <div>
+              <span className="status-pill">
+                {id
+                  ? "INFORMASI DALAM PERSIAPAN"
+                  : "INFORMATION IN PREPARATION"}
+              </span>
+              <h2>
+                {id
+                  ? "Dokumentasi resmi,\nsegera di sini."
+                  : "Official documentation,\ncoming here soon."}
+              </h2>
+              <p>
+                {id
+                  ? "Informasi sertifikasi perusahaan, kredensial personel, dan dokumen pendukung akan ditampilkan setelah diterima serta diverifikasi oleh tim. Saat ini, halaman ini tidak menyatakan kepemilikan sertifikasi atau akreditasi apa pun."
+                  : "Company certifications, professional credentials, and supporting documents will be shown after the team receives and verifies them. This page does not currently claim any certification or accreditation."}
+              </p>
+              <ButtonLink href={url(locale, "contact")}>
+                {id
+                  ? "Diskusikan persyaratan proyek"
+                  : "Discuss project requirements"}
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="section section-tinted">
+        <div className="container">
+          <SectionHeading
+            locale={locale}
+            label={b("FOKUS PENGEMBANGAN", "DEVELOPMENT FOCUS")}
+            title={b(
+              "Kualitas sebagai proses berkelanjutan.",
+              "Quality as an ongoing process.",
+            )}
+          />
+          <div className="values-grid three">
+            {[
+              {
+                Icon: FileCheck2,
+                title: b("Proses terdokumentasi", "Documented processes"),
+                copy: b(
+                  "Catatan yang konsisten membantu menjaga keterlacakan setiap langkah verifikasi.",
+                  "Consistent records help keep each verification step traceable.",
+                ),
+              },
+              {
+                Icon: GraduationCap,
+                title: b("Pengembangan kompetensi", "Professional development"),
+                copy: b(
+                  "Pengetahuan dan keterampilan perlu terus tumbuh mengikuti kebutuhan fasilitas.",
+                  "Knowledge and skills should keep developing alongside facility requirements.",
+                ),
+              },
+              {
+                Icon: ShieldCheck,
+                title: b(
+                  "Praktik yang bertanggung jawab",
+                  "Responsible practices",
+                ),
+                copy: b(
+                  "Ruang lingkup, kesiapan, dan kebutuhan keselamatan ditinjau sebelum pelaksanaan.",
+                  "Scope, readiness, and safety requirements are reviewed before work begins.",
+                ),
+              },
+            ].map((v) => (
+              <div className="value-card" key={v.title.en}>
+                <v.Icon size={28} strokeWidth={1.3} />
+                <h3>{text(v.title, locale)}</h3>
+                <p>{text(v.copy, locale)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
 
 function Careers({ locale }: { locale: Locale }) {
   const id = locale === "id";
-  return <><section className="section"><div className="container careers-intro"><div data-reveal><Eyebrow>{id ? "TUMBUH BERSAMA" : "GROW TOGETHER"}</Eyebrow><h2>{id ? "Rasa ingin tahu\nadalah awal yang baik." : "Curiosity is\na great place to start."}</h2><p>{id ? "Kami ingin membangun lingkungan kerja yang menghargai ketelitian, komunikasi yang jelas, dan kemauan untuk belajar. Dunia engineering terus berkembang. Begitu pula orang-orang di dalamnya." : "We aim to build a workplace that values attention to detail, clear communication, and a willingness to learn. Engineering keeps evolving. So do the people within it."}</p><div className="career-values"><span><Crosshair size={18} />{id ? "Belajar dari detail" : "Learn from the details"}</span><span><UsersRound size={18} />{id ? "Bertumbuh sebagai tim" : "Grow as a team"}</span><span><Leaf size={18} />{id ? "Bekerja dengan tujuan" : "Work with purpose"}</span></div></div><div className="careers-photo" data-reveal><Photo src="/images/industrial.jpg" locale={locale} /></div></div></section><section className="section section-tinted"><div className="container"><div className="jobs-heading"><div><Eyebrow>{id ? "PELUANG KARIER" : "CAREER OPPORTUNITIES"}</Eyebrow><h2>{id ? "Langkah berikutnya untuk Anda." : "Your next step."}</h2></div><span className="status-pill">0 {id ? "POSISI AKTIF" : "OPEN POSITIONS"}</span></div><div className="empty-state"><BriefcaseBusiness size={35} strokeWidth={1.2} /><h3>{id ? "Belum ada lowongan yang dipublikasikan." : "No opportunities have been published yet."}</h3><p>{id ? "Informasi posisi, persyaratan, dan kanal lamaran resmi akan ditambahkan setelah dikonfirmasi oleh tim perusahaan. Silakan kembali untuk melihat pembaruan." : "Positions, requirements, and official application channels will be added after confirmation by the company team. Please check back for updates."}</p><TextLink href={url(locale, "about")}>{id ? "Kenali Green Ridge" : "Get to know Green Ridge"}</TextLink></div></div></section></>;
+  return (
+    <>
+      <section className="section">
+        <div className="container careers-intro">
+          <div data-reveal>
+            <Eyebrow>{id ? "TUMBUH BERSAMA" : "GROW TOGETHER"}</Eyebrow>
+            <h2>
+              {id
+                ? "Rasa ingin tahu\nadalah awal yang baik."
+                : "Curiosity is\na great place to start."}
+            </h2>
+            <p>
+              {id
+                ? "Kami ingin membangun lingkungan kerja yang menghargai ketelitian, komunikasi yang jelas, dan kemauan untuk belajar. Dunia engineering terus berkembang. Begitu pula orang-orang di dalamnya."
+                : "We aim to build a workplace that values attention to detail, clear communication, and a willingness to learn. Engineering keeps evolving. So do the people within it."}
+            </p>
+            <div className="career-values">
+              <span>
+                <Crosshair size={18} />
+                {id ? "Belajar dari detail" : "Learn from the details"}
+              </span>
+              <span>
+                <UsersRound size={18} />
+                {id ? "Bertumbuh sebagai tim" : "Grow as a team"}
+              </span>
+              <span>
+                <Leaf size={18} />
+                {id ? "Bekerja dengan tujuan" : "Work with purpose"}
+              </span>
+            </div>
+          </div>
+          <div className="careers-photo" data-reveal>
+            <Photo src="/images/industrial.jpg" locale={locale} />
+          </div>
+        </div>
+      </section>
+      <section className="section section-tinted">
+        <div className="container">
+          <div className="jobs-heading">
+            <div>
+              <Eyebrow>{id ? "PELUANG KARIR" : "CAREER OPPORTUNITIES"}</Eyebrow>
+              <h2>
+                {id ? "Langkah berikutnya untuk Anda." : "Your next step."}
+              </h2>
+            </div>
+            <span className="status-pill">
+              0 {id ? "POSISI AKTIF" : "OPEN POSITIONS"}
+            </span>
+          </div>
+          <div className="empty-state">
+            <BriefcaseBusiness size={35} strokeWidth={1.2} />
+            <h3>
+              {id
+                ? "Belum ada lowongan yang dipublikasikan."
+                : "No opportunities have been published yet."}
+            </h3>
+            <p>
+              {id
+                ? "Informasi posisi, persyaratan, dan kanal lamaran resmi akan ditambahkan setelah dikonfirmasi oleh tim perusahaan. Silakan kembali untuk melihat pembaruan."
+                : "Positions, requirements, and official application channels will be added after confirmation by the company team. Please check back for updates."}
+            </p>
+            <TextLink href={url(locale, "about")}>
+              {id ? "Kenali Green Ridge" : "Get to know Green Ridge"}
+            </TextLink>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
 
 function Contact({ locale }: { locale: Locale }) {
   const id = locale === "id";
-  return <section className="section"><div className="container contact-layout"><aside className="contact-info"><Eyebrow>{id ? "HUBUNGI GREEN RIDGE" : "CONTACT GREEN RIDGE"}</Eyebrow><h2>{id ? "Mari pahami\nkebutuhan Anda." : "Let's understand\nwhat you need."}</h2><p>{id ? "Proyek baru, verifikasi sistem, atau pertanyaan awal. Awali dengan gambaran singkat tentang kebutuhan Anda." : "A new project, system verification, or an initial question. Start with a brief overview of what you need."}</p><div className="contact-info-item"><Mail size={21} strokeWidth={1.4} /><div><h3>Email</h3>{company.email ? <a href={`mailto:${company.email}`}>{company.email}</a> : <p>{id ? "Alamat resmi sedang disiapkan" : "Official address being prepared"}</p>}</div></div><div className="contact-info-item"><MapPin size={21} strokeWidth={1.4} /><div><h3>{id ? "Kantor" : "Office"}</h3><p>{text(company.address, locale)}</p></div></div><div className="contact-checklist"><h3>{id ? "Agar diskusi lebih terarah" : "For a focused conversation"}</h3>{[b("Jenis dan lokasi fasilitas", "Facility type and location"), b("Layanan atau masalah yang ingin dibahas", "Required service or issue to discuss"), b("Perkiraan jadwal proyek", "Approximate project schedule"), b("Gambar atau spesifikasi yang tersedia", "Available drawings or specifications")].map(item => <p key={item.en}><Check size={15} />{text(item, locale)}</p>)}</div></aside><ContactForm locale={locale} /></div></section>;
+  return (
+    <section className="section">
+      <div className="container contact-layout">
+        <aside className="contact-info">
+          <Eyebrow>
+            {id ? "HUBUNGI GREEN RIDGE" : "CONTACT GREEN RIDGE"}
+          </Eyebrow>
+          <h2>
+            {id
+              ? "Mari pahami\nkebutuhan Anda."
+              : "Let's understand\nwhat you need."}
+          </h2>
+          <p>
+            {id
+              ? "Proyek baru, verifikasi sistem, atau pertanyaan awal. Awali dengan gambaran singkat tentang kebutuhan Anda."
+              : "A new project, system verification, or an initial question. Start with a brief overview of what you need."}
+          </p>
+          <div className="contact-info-item">
+            <Mail size={21} strokeWidth={1.4} />
+            <div>
+              <h3>Email</h3>
+              {company.email ? (
+                <a href={`mailto:${company.email}`}>{company.email}</a>
+              ) : (
+                <p>
+                  {id
+                    ? "Alamat resmi sedang disiapkan"
+                    : "Official address being prepared"}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="contact-info-item">
+            <MapPin size={21} strokeWidth={1.4} />
+            <div>
+              <h3>{id ? "Kantor" : "Office"}</h3>
+              <p>{text(company.address, locale)}</p>
+            </div>
+          </div>
+          <div className="contact-checklist">
+            <h3>
+              {id ? "Agar diskusi lebih terarah" : "For a focused conversation"}
+            </h3>
+            {[
+              b("Jenis dan lokasi fasilitas", "Facility type and location"),
+              b(
+                "Layanan atau masalah yang ingin dibahas",
+                "Required service or issue to discuss",
+              ),
+              b("Perkiraan jadwal proyek", "Approximate project schedule"),
+              b(
+                "Gambar atau spesifikasi yang tersedia",
+                "Available drawings or specifications",
+              ),
+            ].map((item) => (
+              <p key={item.en}>
+                <Check size={15} />
+                {text(item, locale)}
+              </p>
+            ))}
+          </div>
+        </aside>
+        <ContactForm locale={locale} />
+      </div>
+    </section>
+  );
 }
 
 function Privacy({ locale }: { locale: Locale }) {
   const id = locale === "id";
-  return <section className="section article-body"><h2>{id ? "Versi presentasi" : "Presentation version"}</h2><p>{id ? "Website ini merupakan versi presentasi Green Ridge Technics. Profil perusahaan, daftar layanan, dan materi pendukung masih dalam proses penyusunan. Foto digunakan sebagai ilustrasi, bukan dokumentasi proyek aktual perusahaan." : "This website is a presentation version of Green Ridge Technics. The company profile, services, and supporting materials are still being prepared. Photography is illustrative and does not document the company's actual projects."}</p><h2>{id ? "Formulir dan data pribadi" : "Forms and personal information"}</h2><p>{id ? "Formulir kontak memproses informasi hanya di halaman yang Anda buka untuk membuat ringkasan. Website ini tidak menyimpan atau mengirim data formulir ke server. Ringkasan tersimpan hanya jika Anda mengunduhnya atau menyalinnya sendiri. Memuat ulang halaman akan menghapus ringkasan dari tampilan." : "The contact form processes information only on the page you have open to prepare a brief. The website does not save or send form data to a server. A brief is saved only if you download or copy it yourself. Reloading the page removes the brief from view."}</p><h2>{id ? "Analitik dan cookie" : "Analytics and cookies"}</h2><p>{id ? "Website ini tidak memasang analitik atau cookie pemasaran. Penyedia hosting dapat memproses catatan akses teknis untuk menjalankan layanan. Foto dan font disajikan dari aset website." : "This website does not install analytics or marketing cookies. The hosting provider may process technical access logs to operate its service. Photos and fonts are served from website assets."}</p><h2>{id ? "Pembaruan informasi" : "Information updates"}</h2><p>{id ? "Informasi privasi akan ditinjau kembali sebelum fitur pengiriman pesan, CMS, atau analitik diaktifkan. Kanal kontak resmi perusahaan akan ditambahkan setelah tersedia." : "Privacy information will be reviewed before messaging, CMS, or analytics features are enabled. Official company contact channels will be added when available."}</p></section>;
+  return (
+    <section className="section article-body">
+      <h2>{id ? "Versi presentasi" : "Presentation version"}</h2>
+      <p>
+        {id
+          ? "Website ini merupakan versi presentasi Green Ridge Technics. Profil perusahaan, daftar layanan, dan materi pendukung masih dalam proses penyusunan. Foto digunakan sebagai ilustrasi, bukan dokumentasi proyek aktual perusahaan."
+          : "This website is a presentation version of Green Ridge Technics. The company profile, services, and supporting materials are still being prepared. Photography is illustrative and does not document the company's actual projects."}
+      </p>
+      <h2>
+        {id ? "Formulir dan data pribadi" : "Forms and personal information"}
+      </h2>
+      <p>
+        {id
+          ? "Formulir kontak memproses informasi hanya di halaman yang Anda buka untuk membuat ringkasan. Website ini tidak menyimpan atau mengirim data formulir ke server. Ringkasan tersimpan hanya jika Anda mengunduhnya atau menyalinnya sendiri. Memuat ulang halaman akan menghapus ringkasan dari tampilan."
+          : "The contact form processes information only on the page you have open to prepare a brief. The website does not save or send form data to a server. A brief is saved only if you download or copy it yourself. Reloading the page removes the brief from view."}
+      </p>
+      <h2>{id ? "Analitik dan cookie" : "Analytics and cookies"}</h2>
+      <p>
+        {id
+          ? "Website ini tidak memasang analitik atau cookie pemasaran. Penyedia hosting dapat memproses catatan akses teknis untuk menjalankan layanan. Foto dan font disajikan dari aset website."
+          : "This website does not install analytics or marketing cookies. The hosting provider may process technical access logs to operate its service. Photos and fonts are served from website assets."}
+      </p>
+      <h2>{id ? "Pembaruan informasi" : "Information updates"}</h2>
+      <p>
+        {id
+          ? "Informasi privasi akan ditinjau kembali sebelum fitur pengiriman pesan, CMS, atau analitik diaktifkan. Kanal kontak resmi perusahaan akan ditambahkan setelah tersedia."
+          : "Privacy information will be reviewed before messaging, CMS, or analytics features are enabled. Official company contact channels will be added when available."}
+      </p>
+    </section>
+  );
 }
 
-export function ContentPage({ locale, path }: { locale: Locale; path: string }) {
+export function ContentPage({
+  locale,
+  path,
+}: {
+  locale: Locale;
+  path: string;
+}) {
   const info = pageInfo[path];
-  return <><PageHero locale={locale} {...info} />{path === "about" ? <About locale={locale} /> : path === "services" ? <Services locale={locale} /> : path === "projects" ? <ProjectList locale={locale} /> : path === "insights" ? <Insights locale={locale} /> : path === "gallery" ? <section className="section"><div className="container"><Note>{locale === "id" ? "Foto-foto ini merupakan ilustrasi visual dari Unsplash dan Pexels, bukan dokumentasi aktivitas atau proyek perusahaan." : "These photos are visual illustrations from Unsplash and Pexels, not records of company activities or projects."}</Note><Gallery locale={locale} /></div></section> : path === "tools" ? <Equipment locale={locale} /> : path === "certifications" ? <Certifications locale={locale} /> : path === "careers" ? <Careers locale={locale} /> : path === "contact" ? <Contact locale={locale} /> : <Privacy locale={locale} />}{!["contact", "privacy"].includes(path) && <CallToAction locale={locale} />}</>;
+  return (
+    <>
+      <PageHero locale={locale} {...info} />
+      {path === "about" ? (
+        <About locale={locale} />
+      ) : path === "services" ? (
+        <Services locale={locale} />
+      ) : path === "projects" ? (
+        <ProjectList locale={locale} />
+      ) : path === "insights" ? (
+        <Insights locale={locale} />
+      ) : path === "gallery" ? (
+        <section className="section">
+          <div className="container">
+            <Note>
+              {locale === "id"
+                ? "Foto-foto ini merupakan ilustrasi visual dari Unsplash dan Pexels, bukan dokumentasi aktivitas atau proyek perusahaan."
+                : "These photos are visual illustrations from Unsplash and Pexels, not records of company activities or projects."}
+            </Note>
+            <Gallery locale={locale} />
+          </div>
+        </section>
+      ) : path === "tools" ? (
+        <Equipment locale={locale} />
+      ) : path === "certifications" ? (
+        <Certifications locale={locale} />
+      ) : path === "careers" ? (
+        <Careers locale={locale} />
+      ) : path === "contact" ? (
+        <Contact locale={locale} />
+      ) : (
+        <Privacy locale={locale} />
+      )}
+      {!["contact", "privacy"].includes(path) && (
+        <CallToAction locale={locale} />
+      )}
+    </>
+  );
 }
