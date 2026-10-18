@@ -1,18 +1,14 @@
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, ShieldCheck, Crosshair, Layers3, Building2, Factory, Server, MoveUpRight } from "lucide-react";
+import { ArrowUpRight, Building2, Factory, Server, MoveUpRight } from "lucide-react";
 import { b, text, url, services, projects, articles, common, type Locale } from "@/lib/content";
 import { Photo, ButtonLink, TextLink, Eyebrow, SectionHeading, ServiceIcon, CallToAction } from "./ui";
+import { HomeHero, NeedsExplorer } from "./home-experience";
 
 export function HomePage({ locale }: { locale: Locale }) {
   const id = locale === "id";
   return <>
-    <section className="home-hero">
-      <Photo src="/images/data-center.jpg" locale={locale} priority className="hero-photo" />
-      <div className="hero-shade" />
-      <div className="hero-grid" aria-hidden="true" />
-      <div className="container hero-content"><div className="hero-copy"><Eyebrow light>{id ? "INDEPENDENT ENGINEERING SOLUTIONS" : "INDEPENDENT ENGINEERING SOLUTIONS"}</Eyebrow><h1>{id ? <>Kinerja teruji.<br />Keyakinan<br /><em>tanpa kompromi.</em></> : <>Performance proven.<br />Confidence<br /><em>without compromise.</em></>}</h1><p>{id ? "Testing, inspection, dan commissioning untuk memastikan setiap sistem bekerja sebagaimana direncanakan. Dari detail terkecil hingga gambaran besar." : "Testing, inspection, and commissioning to help every system perform as intended. From the smallest detail to the bigger picture."}</p><div className="hero-buttons"><ButtonLink href={url(locale, "services")} variant="lime">{text(common.explore, locale)}</ButtonLink><Link href={url(locale, "about")} className="hero-about">{id ? "Kenali Green Ridge" : "Meet Green Ridge"}<ArrowUpRight size={17} /></Link></div></div><div className="hero-side"><span className="hero-coordinate">PRECISION IN EVERY DETAIL</span><div className="technical-badge"><Crosshair size={30} strokeWidth={1} /><span>DESIGNED TO PERFORM.<br />VERIFIED TO DELIVER.</span></div></div><div className="hero-bottom"><div className="hero-proof"><ShieldCheck size={20} strokeWidth={1.3} /><span>{id ? "Perspektif independen" : "Independent perspective"}</span></div><div className="hero-proof"><Crosshair size={20} strokeWidth={1.3} /><span>{id ? "Pendekatan terukur" : "A measured approach"}</span></div><div className="hero-proof"><Layers3 size={20} strokeWidth={1.3} /><span>{id ? "Solusi terintegrasi" : "Integrated solutions"}</span></div><a href="#introduction" className="scroll-cue" aria-label={id ? "Gulir untuk menjelajah" : "Scroll to explore"}><span>{id ? "JELAJAHI" : "SCROLL TO EXPLORE"}</span><ArrowDown size={17} /></a></div></div>
-      <div className="hero-index" aria-hidden="true">01 <span>/ 04</span></div>
-    </section>
+    <HomeHero locale={locale} />
+    <NeedsExplorer locale={locale} />
 
     <section className="intro-section section" id="introduction"><div className="container intro-grid"><div data-reveal><Eyebrow>{id ? "MITRA TEKNIS ANDA" : "YOUR ENGINEERING PARTNER"}</Eyebrow><h2>{id ? <>Sistem yang andal.<br />Dimulai dari <span className="text-muted">ketelitian.</span></> : <>Reliable systems.<br />Built on <span className="text-muted">precision.</span></>}</h2></div><div className="intro-copy" data-reveal><p>{id ? "Di balik fasilitas yang bekerja dengan baik, ada proses yang tidak pernah mengabaikan detail." : "Behind every facility that performs well is a process that never overlooks the details."}</p><p>{id ? "Green Ridge Technics hadir untuk membantu Anda memahami, memverifikasi, dan meningkatkan kinerja sistem. Kami memadukan ketelitian teknis dengan pendekatan kolaboratif—agar Anda dapat melangkah dengan lebih yakin." : "Green Ridge Technics helps you understand, verify, and improve system performance. We bring technical rigor and a collaborative approach together, so you can move forward with greater confidence."}</p><TextLink href={url(locale, "about")}>{id ? "Tentang Green Ridge Technics" : "About Green Ridge Technics"}</TextLink></div></div></section>
 
