@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/header";
@@ -11,5 +12,5 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <html lang={locale}><body id="top"><a className="skip-link" href="#main">{locale === "id" ? "Lewati ke konten" : "Skip to content"}</a><Header locale={locale} /><main id="main">{children}</main><Footer locale={locale} /><MotionEffects /></body></html>;
+  return <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}><body id="top"><a className="skip-link" href="#main">{t(locale, "content.skip_to_content")}</a><Header locale={locale} /><main id="main">{children}</main><Footer locale={locale} /><MotionEffects /></body></html>;
 }

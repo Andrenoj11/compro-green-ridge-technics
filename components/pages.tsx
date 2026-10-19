@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -21,7 +22,7 @@ import {
   ScanLine,
 } from "lucide-react";
 import {
-  b,
+  m,
   text,
   url,
   services,
@@ -30,6 +31,7 @@ import {
   pageInfo,
   common,
   company,
+  profile,
   type Locale,
 } from "@/lib/content";
 import {
@@ -54,114 +56,69 @@ function Note({ children }: { children: React.ReactNode }) {
 }
 
 function About({ locale }: { locale: Locale }) {
-  const id = locale === "id";
+  const principleKeys = ["about.professionalism", "about.transparency", "about.accountability"] as const;
   return (
     <>
-      <section className="section">
+      <section className="section about-overview">
         <div className="container about-story">
-          <div className="about-photo" data-reveal>
-            <Photo src="/images/engineering.jpg" locale={locale} />
-            <div className="photo-caption">
-              {text(common.photo, locale)}
-              <span>GREEN RIDGE TECHNICS</span>
+          <figure className="about-visual" data-reveal>
+            <div className="about-visual-image">
+              <Photo src="/images/profile-about.png" locale={locale} />
+              <span className="about-image-note">{text(common.photo, locale)}</span>
             </div>
-          </div>
-          <div className="about-story-copy" data-reveal>
-            <Eyebrow>{id ? "LANDASAN KAMI" : "OUR FOUNDATION"}</Eyebrow>
-            <h2>
-              {id
-                ? "Teknis dalam pendekatan.\nManusiawi dalam kolaborasi."
-                : "Technical in our approach.\nHuman in our collaboration."}
-            </h2>
-            <p>
-              {id
-                ? "Green Ridge Technics dirancang sebagai mitra teknis untuk kebutuhan testing, inspection, dan commissioning. Fokus kami adalah membantu menghubungkan rencana desain dengan kinerja fasilitas yang dapat diverifikasi."
-                : "Green Ridge Technics is shaped as a technical partner for testing, inspection, and commissioning. Our focus is connecting design intent with facility performance that can be verified."}
-            </p>
-            <p>
-              {id
-                ? "Kami percaya hasil yang baik lahir dari komunikasi yang terbuka, pemahaman yang menyeluruh, dan perhatian terhadap detail. Dari ruang server hingga gedung komersial, setiap sistem memiliki kebutuhan yang layak dipahami dengan cermat."
-                : "We believe good results come from open communication, thorough understanding, and attention to detail. From server rooms to commercial buildings, every system has requirements worth understanding carefully."}
-            </p>
-            <Note>
-              {id
-                ? "Profil, sejarah, dan informasi tim perusahaan sedang dipersiapkan. Narasi ini merupakan konsep awal untuk presentasi."
-                : "The company profile, history, and team information are being prepared. This narrative is an initial presentation concept."}
-            </Note>
-          </div>
-        </div>
-      </section>
-      <section className="section section-tinted">
-        <div className="container">
-          <SectionHeading
-            locale={locale}
-            label={b("NILAI YANG MEMANDU", "VALUES THAT GUIDE US")}
-            title={b(
-              "Cara berpikir kami.\nCara bekerja kami.",
-              "How we think.\nHow we work.",
-            )}
-          />
-          <div className="values-grid">
-            {[
-              {
-                Icon: Crosshair,
-                title: b("Presisi", "Precision"),
-                copy: b(
-                  "Memahami detail, mempertanyakan asumsi, dan mengutamakan pengukuran yang bermakna.",
-                  "Understanding details, questioning assumptions, and prioritizing meaningful measurements.",
-                ),
-              },
-              {
-                Icon: ShieldCheck,
-                title: b("Integritas", "Integrity"),
-                copy: b(
-                  "Menyampaikan temuan dengan jelas dan menjaga transparansi dalam setiap proses.",
-                  "Communicating findings clearly and maintaining transparency throughout the process.",
-                ),
-              },
-              {
-                Icon: UsersRound,
-                title: b("Kolaborasi", "Collaboration"),
-                copy: b(
-                  "Bekerja bersama pemilik, konsultan, dan kontraktor untuk memahami tujuan yang sama.",
-                  "Working with owners, consultants, and contractors to understand shared objectives.",
-                ),
-              },
-              {
-                Icon: Leaf,
-                title: b("Keberlanjutan", "Sustainability"),
-                copy: b(
-                  "Mempertimbangkan efisiensi dan kinerja jangka panjang dalam setiap rekomendasi.",
-                  "Considering efficiency and long-term performance in every recommendation.",
-                ),
-              },
-            ].map((v) => (
-              <div className="value-card" key={v.title.en} data-reveal>
-                <v.Icon size={30} strokeWidth={1.3} />
-                <h3>{text(v.title, locale)}</h3>
-                <p>{text(v.copy, locale)}</p>
+            <figcaption className="about-location">
+              <MapPin size={20} strokeWidth={1.4} aria-hidden="true" />
+              <div>
+                <span>{t(locale, "pages.office")}</span>
+                <p>{text(company.address, locale)}</p>
               </div>
-            ))}
+            </figcaption>
+          </figure>
+          <div className="about-story-copy" data-reveal>
+            <span className="mini-label">{t(locale, "about.building_solutions")}</span>
+            <h2>PT Green Ridge Technics</h2>
+            <p className="about-story-lead">{t(locale, "about.company_introduction")}</p>
+            <p>{text(profile.principles, locale)}</p>
+            <ul className="about-principles" aria-label={t(locale, "about.our_principles")}>
+              {principleKeys.map(key => (
+                <li key={key}><Check size={15} strokeWidth={1.5} aria-hidden="true" />{t(locale, key)}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
-      <section className="section">
-        <div className="container vision-grid">
-          <div>
-            <span className="mini-label">
-              {id ? "VISI KONSEPTUAL" : "OUR DRAFT VISION"}
-            </span>
-            <h2>
-              {id
-                ? "Masa depan fasilitas\nyang lebih andal."
-                : "A future of\nmore reliable facilities."}
-            </h2>
+
+      <section className="section section-tinted about-purpose-section">
+        <div className="container company-purpose">
+          <div className="company-vision" data-reveal>
+            <Eyebrow>{text(profile.visionLabel, locale)}</Eyebrow>
+            <h2>{text(profile.vision, locale)}</h2>
           </div>
-          <p>
-            {id
-              ? "Menjadi mitra teknis yang membantu pemilik dan pengelola fasilitas membuat keputusan berdasarkan pemahaman yang lebih baik tentang sistem mereka—melalui pengujian, verifikasi, dan dokumentasi yang cermat."
-              : "To be a technical partner that helps facility owners and operators make decisions grounded in a better understanding of their systems, through careful testing, verification, and documentation."}
-          </p>
+          <div className="company-missions" data-reveal>
+            <Eyebrow>{text(profile.missionLabel, locale)}</Eyebrow>
+            <ol>{profile.missions.map((mission, index) => (
+              <li key={index}><span aria-hidden="true">0{index + 1}</span><p>{text(mission, locale)}</p></li>
+            ))}</ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="section director-section">
+        <div className="container">
+          <figure className="director-panel" data-reveal>
+            <div className="director-panel-heading">
+              <div>
+                <Eyebrow light>{text(profile.directorLabel, locale)}</Eyebrow>
+                <h2>{text(profile.directorTitle, locale)}</h2>
+              </div>
+              <span className="director-quote-mark" aria-hidden="true">“</span>
+            </div>
+            <blockquote><p>{text(profile.directorStatement, locale)}</p></blockquote>
+            <figcaption>
+              <span className="director-initials" aria-hidden="true">MZP</span>
+              <span><strong>{profile.directorName}</strong><span>{text(profile.directorRole, locale)} · PT Green Ridge Technics</span></span>
+            </figcaption>
+          </figure>
         </div>
       </section>
     </>
@@ -186,7 +143,7 @@ function Services({ locale }: { locale: Locale }) {
               <h2>{text(s.tagline, locale)}</h2>
               <p>{text(s.description, locale)}</p>
               <ul className="scope-list">
-                {s.scope.slice(0, 3).map((item) => (
+                {s.scope.map((item) => (
                   <li key={item.en}>
                     <Check size={16} />
                     {text(item, locale)}
@@ -194,7 +151,7 @@ function Services({ locale }: { locale: Locale }) {
                 ))}
               </ul>
               <TextLink href={url(locale, `services/${s.slug}`)}>
-                {locale === "id" ? "Jelajahi layanan" : "Explore this service"}
+                {t(locale, "home-experience.explore_this_service")}
               </TextLink>
             </div>
           </article>
@@ -212,7 +169,6 @@ export function ServiceDetail({
   slug: string;
 }) {
   const s = services.find((item) => item.slug === slug)!;
-  const id = locale === "id";
   return (
     <>
       <PageHero
@@ -228,14 +184,12 @@ export function ServiceDetail({
       <section className="section">
         <div className="container detail-layout">
           <div className="detail-body">
-            <Eyebrow>{id ? "TENTANG LAYANAN" : "ABOUT THE SERVICE"}</Eyebrow>
+            <Eyebrow>{t(locale, "pages.about_the_service")}</Eyebrow>
             <h2>
-              {id
-                ? "Memahami kebutuhan.\nMemverifikasi kinerja."
-                : "Understand the need.\nVerify the performance."}
+              {t(locale, "pages.understand_the_need_verify_the_performance")}
             </h2>
             <p>{text(s.detail, locale)}</p>
-            <h3>{id ? "Ruang lingkup layanan" : "Service scope"}</h3>
+            <h3>{t(locale, "pages.service_scope")}</h3>
             <ul className="large-scope-list">
               {s.scope.map((item, index) => (
                 <li key={item.en}>
@@ -245,33 +199,27 @@ export function ServiceDetail({
                 </li>
               ))}
             </ul>
-            <h3>{id ? "Apa yang Anda dapatkan" : "What you receive"}</h3>
+            <h3>{t(locale, "pages.what_you_receive")}</h3>
             <p>{text(s.deliverable, locale)}</p>
             <Note>
-              {id
-                ? "Rincian layanan merupakan konsep sementara. Ketersediaan, metode, dan ruang lingkup final akan dikonfirmasi bersama tim perusahaan."
-                : "Service details are a draft concept. Availability, methodology, and final scope will be confirmed with the company team."}
+              {t(locale, "pages.the_service_list_follows_the_pt_green")}
             </Note>
           </div>
           <aside className="detail-sidebar">
             <span className="mini-label">
-              {id ? "MARI DISKUSIKAN" : "LET'S DISCUSS"}
+              {t(locale, "pages.let_s_discuss")}
             </span>
             <h3>
-              {id
-                ? "Apa yang dibutuhkan fasilitas Anda?"
-                : "What does your facility need?"}
+              {t(locale, "pages.what_does_your_facility_need")}
             </h3>
             <p>
-              {id
-                ? "Siapkan jenis fasilitas, lokasi, jadwal, dan dokumen desain yang tersedia."
-                : "Prepare your facility type, location, schedule, and any available design documents."}
+              {t(locale, "pages.prepare_your_facility_type_location_schedule_and")}
             </p>
             <ButtonLink href={url(locale, "contact")}>
-              {id ? "Mulai konsultasi" : "Start a conversation"}
+              {t(locale, "pages.start_a_conversation")}
             </ButtonLink>
             <div className="sidebar-links">
-              <h4>{id ? "Layanan lainnya" : "Other services"}</h4>
+              <h4>{t(locale, "pages.other_services")}</h4>
               {services
                 .filter((item) => item.slug !== slug)
                 .map((item) => (
@@ -297,9 +245,7 @@ function ProjectList({ locale }: { locale: Locale }) {
     <section className="section">
       <div className="container">
         <Note>
-          {locale === "id"
-            ? "Semua studi di halaman ini adalah contoh penerapan layanan, bukan proyek yang telah dikerjakan Green Ridge Technics. Data klien, lokasi, dan pencapaian aktual akan ditambahkan setelah dikonfirmasi."
-            : "All studies on this page illustrate service applications, not projects delivered by Green Ridge Technics. Actual clients, locations, and achievements will be added after confirmation."}
+          {t(locale, "pages.all_studies_on_this_page_illustrate_service")}
         </Note>
         <ProjectGrid locale={locale} />
       </div>
@@ -316,7 +262,6 @@ export function ProjectDetail({
 }) {
   const project = projects.find((p) => p.slug === slug)!;
   const service = services.find((s) => s.slug === project.service)!;
-  const id = locale === "id";
   return (
     <>
       <PageHero
@@ -328,7 +273,7 @@ export function ProjectDetail({
       <div className="container detail-hero-image">
         <Photo src={project.image} locale={locale} priority />
         <span className="image-tag">
-          {id ? "STUDI ILUSTRATIF" : "ILLUSTRATIVE STUDY"}
+          {t(locale, "interactive.illustrative_study")}
         </span>
       </div>
       <section className="section">
@@ -336,57 +281,45 @@ export function ProjectDetail({
           <div className="detail-body">
             <Note>
               {text(common.demo, locale)}.{" "}
-              {id
-                ? "Tidak ada klaim klien, lokasi, atau hasil aktual pada studi ini."
-                : "No actual client, location, or results are claimed in this study."}
+              {t(locale, "pages.no_actual_client_location_or_results_are")}
             </Note>
             <h2>
-              {id
-                ? "Tantangan yang dipahami.\nPendekatan yang terarah."
-                : "Challenges understood.\nA purposeful approach."}
+              {t(locale, "pages.challenges_understood_a_purposeful_approach")}
             </h2>
             <p>{text(project.description, locale)}</p>
-            <h3>{id ? "Ruang lingkup ilustratif" : "Illustrative scope"}</h3>
+            <h3>{t(locale, "pages.illustrative_scope")}</h3>
             <p>{text(project.scope, locale)}</p>
-            <h3>{id ? "Alur pendekatan" : "The approach"}</h3>
+            <h3>{t(locale, "pages.the_approach")}</h3>
             <ol className="numbered-list">
               <li>
-                {id
-                  ? "Meninjau dokumen desain dan menyepakati kriteria penerimaan bersama tim proyek."
-                  : "Review design documents and agree on acceptance criteria with the project team."}
+                {t(locale, "pages.review_design_documents_and_agree_on_acceptance")}
               </li>
               <li>
-                {id
-                  ? "Memeriksa kesiapan instalasi dan menyusun urutan verifikasi yang sesuai."
-                  : "Assess installation readiness and establish a suitable verification sequence."}
+                {t(locale, "pages.assess_installation_readiness_and_establish_a_suitable")}
               </li>
               <li>
-                {id
-                  ? "Melaksanakan pengukuran atau inspeksi sesuai lingkup dan mendokumentasikan temuan."
-                  : "Perform measurements or inspections within scope and document findings."}
+                {t(locale, "pages.perform_measurements_or_inspections_within_scope_and")}
               </li>
               <li>
-                {id
-                  ? "Menyusun laporan untuk mendukung tindak lanjut dan keputusan serah terima."
-                  : "Prepare a report to support follow-up actions and handover decisions."}
+                {t(locale, "pages.prepare_a_report_to_support_follow_up")}
               </li>
             </ol>
             <TextLink href={url(locale, "projects")}>
-              {id ? "Kembali ke semua studi" : "Back to all studies"}
+              {t(locale, "pages.back_to_all_studies")}
             </TextLink>
           </div>
           <aside className="detail-sidebar">
-            <span className="mini-label">{id ? "SEKTOR" : "SECTOR"}</span>
+            <span className="mini-label">{t(locale, "pages.sector")}</span>
             <h3>{text(project.sector, locale)}</h3>
             <div className="sidebar-links">
-              <h4>{id ? "Layanan terkait" : "Related service"}</h4>
+              <h4>{t(locale, "pages.related_service")}</h4>
               <Link href={url(locale, `services/${service.slug}`)}>
                 {text(service.name, locale)}
                 <ArrowUpRight size={17} />
               </Link>
             </div>
             <ButtonLink href={url(locale, "contact")}>
-              {id ? "Diskusikan proyek serupa" : "Discuss a similar project"}
+              {t(locale, "pages.discuss_a_similar_project")}
             </ButtonLink>
           </aside>
         </div>
@@ -417,7 +350,7 @@ function Insights({ locale }: { locale: Locale }) {
               <div className="article-meta">
                 <span>{text(article.category, locale)}</span>
                 <span>
-                  {article.read} {locale === "id" ? "menit baca" : "min read"}
+                  {article.read} {t(locale, "home.min_read")}
                 </span>
               </div>
               <h2>{text(article.title, locale)}</h2>
@@ -426,9 +359,7 @@ function Insights({ locale }: { locale: Locale }) {
           ))}
         </div>
         <p className="photo-note">
-          {locale === "id"
-            ? "Artikel pengantar untuk presentasi website. Konten teknis final akan ditinjau bersama tim perusahaan."
-            : "Introductory articles for the website presentation. Final technical content will be reviewed with the company team."}
+          {t(locale, "pages.introductory_articles_for_the_website_presentation_final")}
         </p>
       </div>
     </section>
@@ -448,7 +379,7 @@ export function ArticleDetail({
       <section className="article-heading container">
         <Link className="back-link" href={url(locale, "insights")}>
           <ArrowLeft size={16} />
-          {locale === "id" ? "Semua wawasan" : "All insights"}
+          {t(locale, "content.all_insights")}
         </Link>
         <Eyebrow>{text(article.category, locale)}</Eyebrow>
         <h1>{text(article.title, locale)}</h1>
@@ -459,7 +390,7 @@ export function ArticleDetail({
           <span>·</span>
           <Clock3 size={14} />
           <span>
-            {article.read} {locale === "id" ? "menit baca" : "min read"}
+            {article.read} {t(locale, "home.min_read")}
           </span>
         </div>
       </section>
@@ -471,16 +402,12 @@ export function ArticleDetail({
           <p key={i}>{text(paragraph, locale)}</p>
         ))}
         <Note>
-          {locale === "id"
-            ? "Artikel ini merupakan materi pengantar dalam versi presentasi. Penerapan teknis harus mempertimbangkan kebutuhan dan kondisi setiap proyek."
-            : "This article is introductory material for the presentation version. Technical application should consider each project's requirements and conditions."}
+          {t(locale, "pages.this_article_is_introductory_material_for_the")}
         </Note>
         <div className="article-end">
           <span>GREEN RIDGE JOURNAL</span>
           <TextLink href={url(locale, "contact")}>
-            {locale === "id"
-              ? "Diskusikan kebutuhan Anda"
-              : "Discuss your requirements"}
+            {t(locale, "home.discuss_your_requirements")}
           </TextLink>
         </div>
       </section>
@@ -493,66 +420,46 @@ function Equipment({ locale }: { locale: Locale }) {
   const items = [
     {
       Icon: Wind,
-      name: b("Airflow Measurement", "Airflow Measurement"),
-      detail: b(
-        "Instrumen untuk mengukur kecepatan dan volume aliran udara pada sistem ventilasi.",
-        "Instruments for measuring air velocity and volume in ventilation systems.",
-      ),
-      examples: "Airflow hood · Anemometer",
+      name: m("pages.airflow_measurement"),
+      detail: m("pages.instruments_for_measuring_air_velocity_and_volume"),
+      examples: m("ui.airflow_instruments"),
     },
     {
       Icon: Gauge,
-      name: b("Pressure Measurement", "Pressure Measurement"),
-      detail: b(
-        "Pengukuran tekanan dan perbedaan tekanan untuk memahami kondisi operasi sistem.",
-        "Pressure and differential pressure measurement to understand operating conditions.",
-      ),
-      examples: "Differential manometer · Pressure gauge",
+      name: m("pages.pressure_measurement"),
+      detail: m("pages.pressure_and_differential_pressure_measurement_to_understand"),
+      examples: m("ui.pressure_instruments"),
     },
     {
       Icon: Thermometer,
-      name: b("Thermal Measurement", "Thermal Measurement"),
-      detail: b(
-        "Pemantauan temperatur dan kelembapan untuk evaluasi lingkungan dan peralatan.",
-        "Temperature and humidity monitoring for environmental and equipment evaluation.",
-      ),
-      examples: "Thermohygrometer · Thermal imaging",
+      name: m("pages.thermal_measurement"),
+      detail: m("pages.temperature_and_humidity_monitoring_for_environmental_and"),
+      examples: m("ui.thermal_instruments"),
     },
     {
       Icon: Zap,
-      name: b("Electrical Measurement", "Electrical Measurement"),
-      detail: b(
-        "Kategori instrumen untuk evaluasi parameter kelistrikan sesuai ruang lingkup pengujian.",
-        "Instrument categories for assessing electrical parameters within the agreed test scope.",
-      ),
-      examples: "Power analyzer · Multimeter",
+      name: m("pages.electrical_measurement"),
+      detail: m("pages.instrument_categories_for_assessing_electrical_parameters_within"),
+      examples: m("ui.electrical_instruments"),
     },
     {
       Icon: AudioLines,
-      name: b("Environmental Measurement", "Environmental Measurement"),
-      detail: b(
-        "Evaluasi kondisi lingkungan kerja dan respons peralatan terhadap parameter operasi.",
-        "Assessment of working environments and equipment response to operating parameters.",
-      ),
-      examples: "Sound level meter · Vibration meter",
+      name: m("pages.environmental_measurement"),
+      detail: m("pages.assessment_of_working_environments_and_equipment_response"),
+      examples: m("ui.environmental_instruments"),
     },
     {
       Icon: ScanLine,
-      name: b("Documentation & Tracking", "Documentation & Tracking"),
-      detail: b(
-        "Pencatatan terstruktur untuk pelacakan temuan, tindak lanjut, dan hasil verifikasi.",
-        "Structured records for tracking findings, follow-up actions, and verification results.",
-      ),
-      examples: "Digital checklists · Issue registers",
+      name: m("pages.documentation_tracking"),
+      detail: m("pages.structured_records_for_tracking_findings_follow_up"),
+      examples: m("ui.documentation_instruments"),
     },
   ];
   return (
     <section className="section">
       <div className="container">
         <Note>
-          {locale === "id"
-            ? "Daftar berikut menjelaskan kategori instrumen secara umum. Inventaris, merek, dan status kalibrasi milik perusahaan masih menunggu konfirmasi."
-            : "The following describes general instrument categories. Company inventory, brands, and calibration status await confirmation."}
+          {t(locale, "pages.the_following_describes_general_instrument_categories_company")}
         </Note>
         <div className="equipment-grid">
           {items.map((item) => (
@@ -560,7 +467,7 @@ function Equipment({ locale }: { locale: Locale }) {
               <item.Icon size={33} strokeWidth={1.3} />
               <h2>{text(item.name, locale)}</h2>
               <p>{text(item.detail, locale)}</p>
-              <span>{item.examples}</span>
+              <span>{text(item.examples,locale)}</span>
             </article>
           ))}
         </div>
@@ -570,7 +477,6 @@ function Equipment({ locale }: { locale: Locale }) {
 }
 
 function Certifications({ locale }: { locale: Locale }) {
-  const id = locale === "id";
   return (
     <>
       <section className="section">
@@ -581,24 +487,16 @@ function Certifications({ locale }: { locale: Locale }) {
             </div>
             <div>
               <span className="status-pill">
-                {id
-                  ? "INFORMASI DALAM PERSIAPAN"
-                  : "INFORMATION IN PREPARATION"}
+                {t(locale, "pages.information_in_preparation")}
               </span>
               <h2>
-                {id
-                  ? "Dokumentasi resmi,\nsegera di sini."
-                  : "Official documentation,\ncoming here soon."}
+                {t(locale, "pages.official_documentation_coming_here_soon")}
               </h2>
               <p>
-                {id
-                  ? "Informasi sertifikasi perusahaan, kredensial personel, dan dokumen pendukung akan ditampilkan setelah diterima serta diverifikasi oleh tim. Saat ini, halaman ini tidak menyatakan kepemilikan sertifikasi atau akreditasi apa pun."
-                  : "Company certifications, professional credentials, and supporting documents will be shown after the team receives and verifies them. This page does not currently claim any certification or accreditation."}
+                {t(locale, "pages.company_certifications_professional_credentials_and_supporting_documents")}
               </p>
               <ButtonLink href={url(locale, "contact")}>
-                {id
-                  ? "Diskusikan persyaratan proyek"
-                  : "Discuss project requirements"}
+                {t(locale, "pages.discuss_project_requirements")}
               </ButtonLink>
             </div>
           </div>
@@ -608,40 +506,25 @@ function Certifications({ locale }: { locale: Locale }) {
         <div className="container">
           <SectionHeading
             locale={locale}
-            label={b("FOKUS PENGEMBANGAN", "DEVELOPMENT FOCUS")}
-            title={b(
-              "Kualitas sebagai proses berkelanjutan.",
-              "Quality as an ongoing process.",
-            )}
+            label={m("pages.development_focus")}
+            title={m("pages.quality_as_an_ongoing_process")}
           />
           <div className="values-grid three">
             {[
               {
                 Icon: FileCheck2,
-                title: b("Proses terdokumentasi", "Documented processes"),
-                copy: b(
-                  "Catatan yang konsisten membantu menjaga keterlacakan setiap langkah verifikasi.",
-                  "Consistent records help keep each verification step traceable.",
-                ),
+                title: m("pages.documented_processes"),
+                copy: m("pages.consistent_records_help_keep_each_verification_step"),
               },
               {
                 Icon: GraduationCap,
-                title: b("Pengembangan kompetensi", "Professional development"),
-                copy: b(
-                  "Pengetahuan dan keterampilan perlu terus tumbuh mengikuti kebutuhan fasilitas.",
-                  "Knowledge and skills should keep developing alongside facility requirements.",
-                ),
+                title: m("pages.professional_development"),
+                copy: m("pages.knowledge_and_skills_should_keep_developing_alongside"),
               },
               {
                 Icon: ShieldCheck,
-                title: b(
-                  "Praktik yang bertanggung jawab",
-                  "Responsible practices",
-                ),
-                copy: b(
-                  "Ruang lingkup, kesiapan, dan kebutuhan keselamatan ditinjau sebelum pelaksanaan.",
-                  "Scope, readiness, and safety requirements are reviewed before work begins.",
-                ),
+                title: m("pages.responsible_practices"),
+                copy: m("pages.scope_readiness_and_safety_requirements_are_reviewed"),
               },
             ].map((v) => (
               <div className="value-card" key={v.title.en}>
@@ -658,35 +541,30 @@ function Certifications({ locale }: { locale: Locale }) {
 }
 
 function Careers({ locale }: { locale: Locale }) {
-  const id = locale === "id";
   return (
     <>
       <section className="section">
         <div className="container careers-intro">
           <div data-reveal>
-            <Eyebrow>{id ? "TUMBUH BERSAMA" : "GROW TOGETHER"}</Eyebrow>
+            <Eyebrow>{t(locale, "pages.grow_together")}</Eyebrow>
             <h2>
-              {id
-                ? "Rasa ingin tahu\nadalah awal yang baik."
-                : "Curiosity is\na great place to start."}
+              {t(locale, "pages.curiosity_is_a_great_place_to_start")}
             </h2>
             <p>
-              {id
-                ? "Kami ingin membangun lingkungan kerja yang menghargai ketelitian, komunikasi yang jelas, dan kemauan untuk belajar. Dunia engineering terus berkembang. Begitu pula orang-orang di dalamnya."
-                : "We aim to build a workplace that values attention to detail, clear communication, and a willingness to learn. Engineering keeps evolving. So do the people within it."}
+              {t(locale, "pages.we_aim_to_build_a_workplace_that")}
             </p>
             <div className="career-values">
               <span>
                 <Crosshair size={18} />
-                {id ? "Belajar dari detail" : "Learn from the details"}
+                {t(locale, "pages.learn_from_the_details")}
               </span>
               <span>
                 <UsersRound size={18} />
-                {id ? "Bertumbuh sebagai tim" : "Grow as a team"}
+                {t(locale, "pages.grow_as_a_team")}
               </span>
               <span>
                 <Leaf size={18} />
-                {id ? "Bekerja dengan tujuan" : "Work with purpose"}
+                {t(locale, "pages.work_with_purpose")}
               </span>
             </div>
           </div>
@@ -699,29 +577,25 @@ function Careers({ locale }: { locale: Locale }) {
         <div className="container">
           <div className="jobs-heading">
             <div>
-              <Eyebrow>{id ? "PELUANG KARIR" : "CAREER OPPORTUNITIES"}</Eyebrow>
+              <Eyebrow>{t(locale, "pages.career_opportunities")}</Eyebrow>
               <h2>
-                {id ? "Langkah berikutnya untuk Anda." : "Your next step."}
+                {t(locale, "pages.your_next_step")}
               </h2>
             </div>
             <span className="status-pill">
-              0 {id ? "POSISI AKTIF" : "OPEN POSITIONS"}
+              0 {t(locale, "pages.open_positions")}
             </span>
           </div>
           <div className="empty-state">
             <BriefcaseBusiness size={35} strokeWidth={1.2} />
             <h3>
-              {id
-                ? "Belum ada lowongan yang dipublikasikan."
-                : "No opportunities have been published yet."}
+              {t(locale, "pages.no_opportunities_have_been_published_yet")}
             </h3>
             <p>
-              {id
-                ? "Informasi posisi, persyaratan, dan kanal lamaran resmi akan ditambahkan setelah dikonfirmasi oleh tim perusahaan. Silakan kembali untuk melihat pembaruan."
-                : "Positions, requirements, and official application channels will be added after confirmation by the company team. Please check back for updates."}
+              {t(locale, "pages.positions_requirements_and_official_application_channels_will")}
             </p>
             <TextLink href={url(locale, "about")}>
-              {id ? "Kenali Green Ridge" : "Get to know Green Ridge"}
+              {t(locale, "pages.get_to_know_green_ridge")}
             </TextLink>
           </div>
         </div>
@@ -731,35 +605,28 @@ function Careers({ locale }: { locale: Locale }) {
 }
 
 function Contact({ locale }: { locale: Locale }) {
-  const id = locale === "id";
   return (
     <section className="section">
       <div className="container contact-layout">
         <aside className="contact-info">
           <Eyebrow>
-            {id ? "HUBUNGI GREEN RIDGE" : "CONTACT GREEN RIDGE"}
+            {t(locale, "pages.contact_green_ridge")}
           </Eyebrow>
           <h2>
-            {id
-              ? "Mari pahami\nkebutuhan Anda."
-              : "Let's understand\nwhat you need."}
+            {t(locale, "pages.let_s_understand_what_you_need")}
           </h2>
           <p>
-            {id
-              ? "Proyek baru, verifikasi sistem, atau pertanyaan awal. Awali dengan gambaran singkat tentang kebutuhan Anda."
-              : "A new project, system verification, or an initial question. Start with a brief overview of what you need."}
+            {t(locale, "pages.a_new_project_system_verification_or_an")}
           </p>
           <div className="contact-info-item">
             <Mail size={21} strokeWidth={1.4} />
             <div>
-              <h3>Email</h3>
+              <h3>{t(locale,"ui.email")}</h3>
               {company.email ? (
                 <a href={`mailto:${company.email}`}>{company.email}</a>
               ) : (
                 <p>
-                  {id
-                    ? "Alamat resmi sedang disiapkan"
-                    : "Official address being prepared"}
+                  {t(locale, "pages.official_address_being_prepared")}
                 </p>
               )}
             </div>
@@ -767,25 +634,19 @@ function Contact({ locale }: { locale: Locale }) {
           <div className="contact-info-item">
             <MapPin size={21} strokeWidth={1.4} />
             <div>
-              <h3>{id ? "Kantor" : "Office"}</h3>
+              <h3>{t(locale, "pages.office")}</h3>
               <p>{text(company.address, locale)}</p>
             </div>
           </div>
           <div className="contact-checklist">
             <h3>
-              {id ? "Agar diskusi lebih terarah" : "For a focused conversation"}
+              {t(locale, "pages.for_a_focused_conversation")}
             </h3>
             {[
-              b("Jenis dan lokasi fasilitas", "Facility type and location"),
-              b(
-                "Layanan atau masalah yang ingin dibahas",
-                "Required service or issue to discuss",
-              ),
-              b("Perkiraan jadwal proyek", "Approximate project schedule"),
-              b(
-                "Gambar atau spesifikasi yang tersedia",
-                "Available drawings or specifications",
-              ),
+              m("pages.facility_type_and_location"),
+              m("pages.required_service_or_issue_to_discuss"),
+              m("pages.approximate_project_schedule"),
+              m("pages.available_drawings_or_specifications"),
             ].map((item) => (
               <p key={item.en}>
                 <Check size={15} />
@@ -801,34 +662,25 @@ function Contact({ locale }: { locale: Locale }) {
 }
 
 function Privacy({ locale }: { locale: Locale }) {
-  const id = locale === "id";
   return (
     <section className="section article-body">
-      <h2>{id ? "Versi presentasi" : "Presentation version"}</h2>
+      <h2>{t(locale, "pages.presentation_version")}</h2>
       <p>
-        {id
-          ? "Website ini merupakan versi presentasi Green Ridge Technics. Profil perusahaan, daftar layanan, dan materi pendukung masih dalam proses penyusunan. Foto digunakan sebagai ilustrasi, bukan dokumentasi proyek aktual perusahaan."
-          : "This website is a presentation version of Green Ridge Technics. The company profile, services, and supporting materials are still being prepared. Photography is illustrative and does not document the company's actual projects."}
+        {t(locale, "pages.this_website_is_a_presentation_version_of")}
       </p>
       <h2>
-        {id ? "Formulir dan data pribadi" : "Forms and personal information"}
+        {t(locale, "pages.forms_and_personal_information")}
       </h2>
       <p>
-        {id
-          ? "Formulir kontak memproses informasi hanya di halaman yang Anda buka untuk membuat ringkasan. Website ini tidak menyimpan atau mengirim data formulir ke server. Ringkasan tersimpan hanya jika Anda mengunduhnya atau menyalinnya sendiri. Memuat ulang halaman akan menghapus ringkasan dari tampilan."
-          : "The contact form processes information only on the page you have open to prepare a brief. The website does not save or send form data to a server. A brief is saved only if you download or copy it yourself. Reloading the page removes the brief from view."}
+        {t(locale, "pages.the_contact_form_processes_information_only_on")}
       </p>
-      <h2>{id ? "Analitik dan cookie" : "Analytics and cookies"}</h2>
+      <h2>{t(locale, "pages.analytics_and_cookies")}</h2>
       <p>
-        {id
-          ? "Website ini tidak memasang analitik atau cookie pemasaran. Penyedia hosting dapat memproses catatan akses teknis untuk menjalankan layanan. Foto dan font disajikan dari aset website."
-          : "This website does not install analytics or marketing cookies. The hosting provider may process technical access logs to operate its service. Photos and fonts are served from website assets."}
+        {t(locale, "pages.this_website_does_not_install_analytics_or")}
       </p>
-      <h2>{id ? "Pembaruan informasi" : "Information updates"}</h2>
+      <h2>{t(locale, "pages.information_updates")}</h2>
       <p>
-        {id
-          ? "Informasi privasi akan ditinjau kembali sebelum fitur pengiriman pesan, CMS, atau analitik diaktifkan. Kanal kontak resmi perusahaan akan ditambahkan setelah tersedia."
-          : "Privacy information will be reviewed before messaging, CMS, or analytics features are enabled. Official company contact channels will be added when available."}
+        {t(locale, "pages.privacy_information_will_be_reviewed_before_messaging")}
       </p>
     </section>
   );
@@ -842,12 +694,13 @@ export function ContentPage({
   path: string;
 }) {
   const info = pageInfo[path];
+  if (path === "about") {
+    return <div className="about-page"><PageHero locale={locale} {...info} /><About locale={locale} /><CallToAction locale={locale} /></div>;
+  }
   return (
     <>
       <PageHero locale={locale} {...info} />
-      {path === "about" ? (
-        <About locale={locale} />
-      ) : path === "services" ? (
+      {path === "services" ? (
         <Services locale={locale} />
       ) : path === "projects" ? (
         <ProjectList locale={locale} />
@@ -857,9 +710,7 @@ export function ContentPage({
         <section className="section">
           <div className="container">
             <Note>
-              {locale === "id"
-                ? "Foto-foto ini merupakan ilustrasi visual dari Unsplash dan Pexels, bukan dokumentasi aktivitas atau proyek perusahaan."
-                : "These photos are visual illustrations from Unsplash and Pexels, not records of company activities or projects."}
+              {t(locale, "pages.these_photos_are_visual_illustrations_from_unsplash")}
             </Note>
             <Gallery locale={locale} />
           </div>

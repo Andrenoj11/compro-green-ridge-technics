@@ -1,6 +1,7 @@
+import { t, locales, languageTags, openGraphLocales } from "./i18n";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { articles, b, pageInfo, projects, services, text, url, type Locale } from "./content";
+import { articles, m, pageInfo, paths, services, text, url, type Locale } from "./content";
 
 export const indexable = process.env.SITE_INDEXABLE === "true";
 
@@ -13,28 +14,28 @@ export async function siteOrigin() {
 }
 
 export function routeInfo(path: string) {
-  if (!path) return { title: b("Testing, Inspection & Commissioning", "Testing, Inspection & Commissioning"), description: b("Green Ridge Technics — mitra teknis untuk testing, inspection, commissioning, dan evaluasi kinerja fasilitas. Ketelitian teknis untuk keyakinan di setiap langkah.", "Green Ridge Technics — your technical partner for testing, inspection, commissioning, and facility performance. Technical precision for confidence at every step.") };
+  if (!paths.includes(path)) return null;
+  if (!path) return { title: m("content.testing_inspection_commissioning"), description: m("content.green_ridge_technics_your_technical_partner_for") };
   if (pageInfo[path]) return pageInfo[path];
   const [section, slug] = path.split("/");
   if (section === "services") { const service = services.find(s => s.slug === slug); if (service) return { title: service.name, description: service.description }; }
-  if (section === "projects") { const project = projects.find(p => p.slug === slug); if (project) return { title: project.name, description: project.description }; }
   if (section === "insights") { const article = articles.find(a => a.slug === slug); if (article) return { title: article.title, description: article.excerpt }; }
   return null;
 }
 
 export async function pageMetadata(locale: Locale, path: string): Promise<Metadata> {
   const info = routeInfo(path);
-  if (!info) return { title: "Page not found", robots: { index: false, follow: false } };
+  if (!info) return { title: t(locale,"ui.not_found"), robots: { index: false, follow: false } };
   const origin = await siteOrigin();
   const title = `${text(info.title, locale).replace(/\n/g, " ")} | Green Ridge Technics`;
   const description = text(info.description, locale);
   return {
     metadataBase: new URL(origin), title, description,
     applicationName: "Green Ridge Technics",
-    alternates: { canonical: url(locale, path), languages: { "id-ID": url("id", path), "en": url("en", path), "x-default": url("id", path) } },
+    alternates: { canonical: url(locale, path), languages: { ...Object.fromEntries(locales.map(language=>[languageTags[language],url(language,path)])), "x-default":url("id",path) } },
     robots: { index: indexable, follow: indexable },
-    openGraph: { type: "website", siteName: "Green Ridge Technics", title, description, locale: locale === "id" ? "id_ID" : "en_US", alternateLocale: locale === "id" ? "en_US" : "id_ID", url: `${origin}${url(locale, path)}`, images: [{ url: `${origin}/og.png`, width: 1736, height: 906, alt: "Green Ridge Technics — Engineered for confidence." }] },
+    openGraph: { type: "website", siteName: "Green Ridge Technics", title, description, locale: openGraphLocales[locale], alternateLocale: locales.filter(language=>language!==locale).map(language=>openGraphLocales[language]), url: `${origin}${url(locale, path)}`, images: [{ url: `${origin}/og.png`, width: 1736, height: 906, alt: "Green Ridge Technics — Engineered for confidence." }] },
     twitter: { card: "summary_large_image", title, description, images: [`${origin}/og.png`] },
-    icons: { icon: "/icon.png", apple: "/icon.png" },
+    icons: { icon: [{url:"/icon.svg",type:"image/svg+xml"},{url:"/icon.png",type:"image/png"}], apple: "/icon.png" },
   };
 }

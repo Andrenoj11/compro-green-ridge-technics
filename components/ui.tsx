@@ -1,10 +1,11 @@
+import { t } from "@/lib/i18n";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Activity, ScanLine, Settings2, Leaf, ArrowRight } from "lucide-react";
-import { type Locale, type Bilingual, text, url, imageAlt } from "@/lib/content";
+import { type Locale, type Localized, text, url, imageAlt } from "@/lib/content";
 
 export function Brand({ light = false }: { light?: boolean }) {
-  return <span className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark" aria-hidden="true"><i /><i /></span><span className="brand-type">GREEN RIDGE<span>TECHNICS</span></span></span>;
+  return <span className={`brand ${light ? "brand-light" : ""}`}><Image src="/images/logo-grt.svg" alt="Green Ridge Technics" width={1723} height={664} sizes="(max-width: 700px) 185px, 232px" className="brand-image" /></span>;
 }
 
 export function Photo({ src, locale, className = "", priority = false }: { src: string; locale: Locale; className?: string; priority?: boolean }) {
@@ -24,7 +25,7 @@ export function Eyebrow({ children, light = false }: { children: React.ReactNode
   return <div className={`eyebrow ${light ? "eyebrow-light" : ""}`}><span />{children}</div>;
 }
 
-export function SectionHeading({ locale, label, title, description, href, link }: { locale: Locale; label: Bilingual; title: Bilingual; description?: Bilingual; href?: string; link?: Bilingual }) {
+export function SectionHeading({ locale, label, title, description, href, link }: { locale: Locale; label: Localized; title: Localized; description?: Localized; href?: string; link?: Localized }) {
   return <div className="section-heading" data-reveal><div><Eyebrow>{text(label, locale)}</Eyebrow><h2>{text(title, locale)}</h2>{description && <p>{text(description, locale)}</p>}</div>{href && link && <TextLink href={href}>{text(link, locale)}</TextLink>}</div>;
 }
 
@@ -33,10 +34,10 @@ export function ServiceIcon({ name, size = 29 }: { name: string; size?: number }
   return <Icon size={size} strokeWidth={1.4} aria-hidden="true" />;
 }
 
-export function PageHero({ locale, eyebrow, title, description }: { locale: Locale; eyebrow: Bilingual; title: Bilingual; description: Bilingual }) {
-  return <section className="page-hero"><div className="container"><div className="breadcrumbs"><Link href={url(locale)}>{locale === "id" ? "Beranda" : "Home"}</Link><span>/</span><span>{text(eyebrow, locale)}</span></div><div className="page-hero-inner"><div><Eyebrow>{text(eyebrow, locale)}</Eyebrow><h1>{text(title, locale)}</h1></div><p>{text(description, locale)}</p></div></div><div className="hero-watermark" aria-hidden="true">GRT</div></section>;
+export function PageHero({ locale, eyebrow, title, description }: { locale: Locale; eyebrow: Localized; title: Localized; description: Localized }) {
+  return <section className="page-hero"><div className="container"><div className="breadcrumbs"><Link href={url(locale)}>{t(locale, "content.home")}</Link><span>/</span><span>{text(eyebrow, locale)}</span></div><div className="page-hero-inner"><div><Eyebrow>{text(eyebrow, locale)}</Eyebrow><h1>{text(title, locale)}</h1></div><p>{text(description, locale)}</p></div></div><div className="hero-watermark" aria-hidden="true">GRT</div></section>;
 }
 
 export function CallToAction({ locale }: { locale: Locale }) {
-  return <section className="cta-section"><div className="container cta-inner" data-reveal><div><Eyebrow>{locale === "id" ? "LANGKAH BERIKUTNYA" : "YOUR NEXT STEP"}</Eyebrow><h2>{locale === "id" ? "Mari bangun keyakinan.\nMulai dari sistem Anda." : "Let's build confidence.\nStarting with your systems."}</h2><p>{locale === "id" ? "Bersama, kita siapkan fasilitas Anda untuk bekerja lebih baik." : "Together, let's get your facility ready to perform better."}</p></div><Link className="cta-circle" href={url(locale, "contact")}><ArrowUpRight size={40} strokeWidth={1.3} aria-hidden="true" /><span>{locale === "id" ? "Mulai percakapan" : "Start a conversation"}</span></Link></div></section>;
+  return <section className="cta-section"><div className="container cta-inner" data-reveal><div><Eyebrow>{t(locale, "ui.your_next_step")}</Eyebrow><h2>{t(locale, "ui.let_s_build_confidence_starting_with_your")}</h2><p>{t(locale, "ui.together_let_s_get_your_facility_ready")}</p></div><Link className="cta-circle" href={url(locale, "contact")}><ArrowUpRight size={40} strokeWidth={1.3} aria-hidden="true" /><span>{t(locale, "pages.start_a_conversation")}</span></Link></div></section>;
 }
