@@ -81,7 +81,7 @@ function EngineeringDiagram({ locale }: { locale: Locale }) {
     <span className="diagram-label diagram-label-air"><i>01</i>{t(locale,"ui.airflow")}</span>
     <span className="diagram-label diagram-label-power"><i>02</i>{t(locale,"ui.electrical")}</span>
     <span className="diagram-label diagram-label-system"><i>03</i>{t(locale,"ui.integration")}</span>
-    <div className="diagram-caption"><span>{t(locale, "home-experience.from_components_to_integration")}</span><span>{t(locale, "home-experience.verification_approach_illustration")}</span></div>
+    <div className="diagram-caption"><span>{t(locale, "home-experience.from_components_to_integration")}</span></div>
   </div>;
 }
 

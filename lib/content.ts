@@ -5,7 +5,7 @@ export type { Localized } from "./i18n";
 // Company information follows the supplied 2026 company profile.
 export const company = {
   name: "Green Ridge Technics",
-  email: "", // Set the approved company email to enable real contact links.
+  email: "support@gr-tech.id",
   phone: "",
   address: m("content.jl_bintaro_raya_selatan_no_8_rt"),
 };
@@ -213,7 +213,7 @@ export const pageInfo: Record<
   gallery: {
     eyebrow: m("content.behind_the_systems"),
     title: m("content.a_closer_look_a_deeper_understanding"),
-    description: m("content.a_visual_collection_illustrating_the_working_environments"),
+    description: m("content.technical_environments_and_engineering_disciplines"),
   },
   tools: {
     eyebrow: m("content.equipment_technology"),
@@ -238,7 +238,7 @@ export const pageInfo: Record<
   privacy: {
     eyebrow: m("content.website_information"),
     title: m("content.privacy_data_use"),
-    description: m("content.how_information_is_handled_in_this_presentation"),
+    description: m("content.how_information_is_handled_on_this_website"),
   },
 };
 
@@ -249,10 +249,10 @@ export const paths = [
   ...articles.map((a) => `insights/${a.slug}`),
 ];
 export const imageAlt = {
-  "/images/profile-about.png": m("ui.profile_illustration"),
+  "/images/profile-about.png": m("ui.technical_documentation"),
   "/images/data-center.jpg": m("content.server_aisle_inside_a_modern_data_center"),
   "/images/building.jpg": m("content.glass_facade_of_a_modern_commercial_building"),
-  "/images/engineering.jpg": m("content.illustration_of_technical_work_and_engineering_equipment"),
+  "/images/engineering.jpg": m("content.technical_work_and_engineering_equipment"),
   "/images/industrial.jpg": m("content.process_towers_and_pipework_at_an_industrial"),
 };
 
@@ -263,6 +263,4 @@ export const common = {
   allProjects: m("content.explore_projects"),
   allArticles: m("content.all_insights"),
   demo: m("content.illustrative_project_not_an_actual_portfolio_entry"),
-  photo: m("content.illustrative_photography"),
-  draft: m("content.presentation_version_company_content_is_in_development"),
 };

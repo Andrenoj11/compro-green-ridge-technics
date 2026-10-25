@@ -19,7 +19,7 @@ npm run typecheck
 npm test
 ```
 
-The HTTP integration tests expect a running server at `http://localhost:3000`. Set `TEST_URL` to test another local production server. Tests check all 68 localized pages, four complete language catalogs, company profile content, all four service groups, hidden project routes, internal links, language tags and direction, metadata, sitemap, robots, assets, and presentation disclosures.
+The HTTP integration tests expect a running server at `http://localhost:3000`. Set `TEST_URL` to test another local production server. Tests check all 68 localized pages, four complete language catalogs, company profile content, all four service groups, hidden project routes, internal links, language tags and direction, metadata, sitemap, robots, assets, and the absence of development notices.
 
 ## Content and pages
 
@@ -36,7 +36,7 @@ Shared page layouts are in `components/pages.tsx`; the homepage is `components/h
 
 The company description, address, vision, mission, director statement, and four service groups follow the supplied 2026 company profile. Other photography and introductory articles remain presentation assets. Projects are currently hidden. The certifications page makes no certification claims, and careers does not invent open positions.
 
-The contact form validates inputs and prepares a project brief in page memory. Visitors can copy or download it; it does **not** submit or save personal information. Set `company.email` in `lib/content.ts` to expose an approved email contact and a mailto action on the prepared brief. A real submission endpoint can be added later. No CMS, database, analytics, or marketing cookies are implemented.
+The contact form validates inputs and prepares a project brief in page memory. Visitors can copy or download it; it does **not** submit or save personal information. The company email, `support@gr-tech.id`, is configured in `lib/content.ts` and appears as a contact link and a mailto action on the prepared brief. The mailto action opens the visitor's email application with the brief addressed to the company. A real submission endpoint can be added later. No CMS, database, analytics, or marketing cookies are implemented.
 
 ## SEO
 

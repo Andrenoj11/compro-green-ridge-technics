@@ -32,6 +32,8 @@ test('all 68 pages render meaningful, localized HTML and valid internal links', 
     assert.doesNotMatch(html, /href="\/(id|en|ar|zh)\/projects(?:\/|")/, path);
     assert.match(html, /name="robots" content="noindex, nofollow"/, path);
     assert.match(html, /property="og:image"/, path);
+    assert.doesNotMatch(html, /class="(?:footer-draft|footer-wordmark|about-image-note|photo-note|form-note)"/, path);
+    assert.doesNotMatch(html, /Presentation version|Presentation mode|Illustrative photography|INFORMATION IN PREPARATION|coming here soon|Versi presentasi|Mode presentasi|Foto ilustrasi|INFORMASI DALAM PERSIAPAN|صور توضيحية|النسخة التعريفية|المعلومات قيد الإعداد|示意图片|展示版本|信息准备中/i, path);
     const schema = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
     assert.ok(schema, `${path}: structured data`);
     assert.equal(JSON.parse(schema[1])['@graph'].find(item => item['@type'] === 'WebPage').inLanguage, locale);
@@ -64,7 +66,7 @@ test('unknown pages and unsupported languages return 404', async () => {
   }
 });
 
-test('image assets and presentation disclosures are available', async () => {
+test('image assets and accurate contact form instructions are available', async () => {
   for (const path of ['/icon.png', '/icon.svg', '/images/logo-grt.svg', '/images/profile-about.png', '/og.png', '/images/data-center.jpg', '/images/building.jpg', '/images/engineering.jpg', '/images/industrial.jpg']) {
     const response = await get(path);
     assert.equal(response.status, 200, path);
@@ -73,7 +75,9 @@ test('image assets and presentation disclosures are available', async () => {
   const contact = await (await get('/en/contact')).text();
   assert.match(contact, /does not send a message/);
   const certificates = await (await get('/en/certifications')).text();
-  assert.match(certificates, /does not currently claim any certification/);
+  assert.match(certificates, /Quality and professional standards/);
+  assert.match(certificates, /Discuss the documentation and competency requirements/);
+  assert.doesNotMatch(certificates, /will be shown after|does not currently claim any certification/);
 });
 
 

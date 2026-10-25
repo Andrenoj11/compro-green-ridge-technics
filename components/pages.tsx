@@ -64,7 +64,6 @@ function About({ locale }: { locale: Locale }) {
           <figure className="about-visual" data-reveal>
             <div className="about-visual-image">
               <Photo src="/images/profile-about.png" locale={locale} />
-              <span className="about-image-note">{text(common.photo, locale)}</span>
             </div>
             <figcaption className="about-location">
               <MapPin size={20} strokeWidth={1.4} aria-hidden="true" />
@@ -179,7 +178,6 @@ export function ServiceDetail({
       />
       <div className="container detail-hero-image">
         <Photo src={s.image} locale={locale} priority />
-        <span className="image-tag">{text(common.photo, locale)}</span>
       </div>
       <section className="section">
         <div className="container detail-layout">
@@ -201,9 +199,6 @@ export function ServiceDetail({
             </ul>
             <h3>{t(locale, "pages.what_you_receive")}</h3>
             <p>{text(s.deliverable, locale)}</p>
-            <Note>
-              {t(locale, "pages.the_service_list_follows_the_pt_green")}
-            </Note>
           </div>
           <aside className="detail-sidebar">
             <span className="mini-label">
@@ -358,9 +353,6 @@ function Insights({ locale }: { locale: Locale }) {
             </Link>
           ))}
         </div>
-        <p className="photo-note">
-          {t(locale, "pages.introductory_articles_for_the_website_presentation_final")}
-        </p>
       </div>
     </section>
   );
@@ -401,9 +393,6 @@ export function ArticleDetail({
         {article.paragraphs.map((paragraph, i) => (
           <p key={i}>{text(paragraph, locale)}</p>
         ))}
-        <Note>
-          {t(locale, "pages.this_article_is_introductory_material_for_the")}
-        </Note>
         <div className="article-end">
           <span>GREEN RIDGE JOURNAL</span>
           <TextLink href={url(locale, "contact")}>
@@ -458,9 +447,6 @@ function Equipment({ locale }: { locale: Locale }) {
   return (
     <section className="section">
       <div className="container">
-        <Note>
-          {t(locale, "pages.the_following_describes_general_instrument_categories_company")}
-        </Note>
         <div className="equipment-grid">
           {items.map((item) => (
             <article className="equipment-card" key={item.name.en} data-reveal>
@@ -486,14 +472,11 @@ function Certifications({ locale }: { locale: Locale }) {
               <FileCheck2 size={40} strokeWidth={1} />
             </div>
             <div>
-              <span className="status-pill">
-                {t(locale, "pages.information_in_preparation")}
-              </span>
               <h2>
-                {t(locale, "pages.official_documentation_coming_here_soon")}
+                {t(locale, "pages.quality_and_professional_standards")}
               </h2>
               <p>
-                {t(locale, "pages.company_certifications_professional_credentials_and_supporting_documents")}
+                {t(locale, "pages.discuss_documentation_and_competency_requirements")}
               </p>
               <ButtonLink href={url(locale, "contact")}>
                 {t(locale, "pages.discuss_project_requirements")}
@@ -506,7 +489,7 @@ function Certifications({ locale }: { locale: Locale }) {
         <div className="container">
           <SectionHeading
             locale={locale}
-            label={m("pages.development_focus")}
+            label={m("pages.quality_approach")}
             title={m("pages.quality_as_an_ongoing_process")}
           />
           <div className="values-grid three">
@@ -589,10 +572,10 @@ function Careers({ locale }: { locale: Locale }) {
           <div className="empty-state">
             <BriefcaseBusiness size={35} strokeWidth={1.2} />
             <h3>
-              {t(locale, "pages.no_opportunities_have_been_published_yet")}
+              {t(locale, "pages.no_open_positions")}
             </h3>
             <p>
-              {t(locale, "pages.positions_requirements_and_official_application_channels_will")}
+              {t(locale, "pages.explore_our_expertise_and_working_approach")}
             </p>
             <TextLink href={url(locale, "about")}>
               {t(locale, "pages.get_to_know_green_ridge")}
@@ -618,19 +601,13 @@ function Contact({ locale }: { locale: Locale }) {
           <p>
             {t(locale, "pages.a_new_project_system_verification_or_an")}
           </p>
-          <div className="contact-info-item">
+          {company.email && <div className="contact-info-item">
             <Mail size={21} strokeWidth={1.4} />
             <div>
-              <h3>{t(locale,"ui.email")}</h3>
-              {company.email ? (
-                <a href={`mailto:${company.email}`}>{company.email}</a>
-              ) : (
-                <p>
-                  {t(locale, "pages.official_address_being_prepared")}
-                </p>
-              )}
+              <h3>{t(locale, "ui.email")}</h3>
+              <a href={`mailto:${company.email}`}>{company.email}</a>
             </div>
-          </div>
+          </div>}
           <div className="contact-info-item">
             <MapPin size={21} strokeWidth={1.4} />
             <div>
@@ -664,10 +641,6 @@ function Contact({ locale }: { locale: Locale }) {
 function Privacy({ locale }: { locale: Locale }) {
   return (
     <section className="section article-body">
-      <h2>{t(locale, "pages.presentation_version")}</h2>
-      <p>
-        {t(locale, "pages.this_website_is_a_presentation_version_of")}
-      </p>
       <h2>
         {t(locale, "pages.forms_and_personal_information")}
       </h2>
@@ -680,7 +653,7 @@ function Privacy({ locale }: { locale: Locale }) {
       </p>
       <h2>{t(locale, "pages.information_updates")}</h2>
       <p>
-        {t(locale, "pages.privacy_information_will_be_reviewed_before_messaging")}
+        {t(locale, "pages.privacy_information_updates")}
       </p>
     </section>
   );
@@ -709,9 +682,6 @@ export function ContentPage({
       ) : path === "gallery" ? (
         <section className="section">
           <div className="container">
-            <Note>
-              {t(locale, "pages.these_photos_are_visual_illustrations_from_unsplash")}
-            </Note>
             <Gallery locale={locale} />
           </div>
         </section>
