@@ -61,6 +61,9 @@ The supplied company logo is retained unchanged at `public/images/logo-grt.png`.
 
 ## Optional Sites build
 
+For Ubuntu VPS deployment with Docker Compose and Caddy, see
+[deploy/README.md](deploy/README.md).
+
 ```sh
 npm run build:sites
 ```
