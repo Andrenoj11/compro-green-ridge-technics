@@ -27,9 +27,11 @@ chmod 600 .env
 nano .env
 ```
 
-Set `SITE_DOMAIN` to the apex hostname, without `https://` or a path (default:
+Set `SITE_DOMAIN` to the apex hostname, without `www`, `https://` or a path (default:
 `greenridgetechnics.com`). Point `www` to that hostname with a CNAME record;
-Caddy redirects `www` to the apex domain while preserving the request path.
+Caddy serves `www` and redirects the apex domain to `www` with HTTP 308,
+preserving the request path and query. Compose sets the canonical origin to
+`https://www.${SITE_DOMAIN}` at build time and runtime.
 Keep `SITE_INDEXABLE=false` while
 content approval is pending. Both values are passed at build time and runtime.
 
@@ -40,7 +42,7 @@ sudo docker compose ps
 sudo docker compose logs --tail=80 web caddy
 ```
 
-Open `https://YOUR_DOMAIN/id` and verify images and the other language routes.
+Open `https://www.YOUR_DOMAIN/id` and verify images and the other language routes.
 Caddy automatically requests HTTPS certificates once DNS and ports are ready.
 Container readiness alone does not verify that public HTTPS works.
 
@@ -55,7 +57,11 @@ Record the current commit before updating, then pull and rebuild:
 git rev-parse HEAD
 git pull --ff-only
 sudo docker compose up -d --build --wait --wait-timeout 180
+sudo docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
 ```
+
+Reload Caddy after updating its bind-mounted configuration. If only the file
+contents change, Compose does not automatically recreate or reload Caddy.
 
 There may be a short interruption while the web container is replaced. If an
 update fails, inspect logs, then restore the previously recorded commit and
