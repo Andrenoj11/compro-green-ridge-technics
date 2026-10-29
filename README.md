@@ -1,6 +1,6 @@
 # Green Ridge Technics
 
-Four-language company profile and design presentation built with **Next.js App Router, TypeScript, Tailwind CSS 4, and React**. Primary commands use real Next.js; an additional Sites/vinext adapter is retained solely for optional private Cloudflare preview hosting.
+Four-language company profile built with **Next.js App Router, TypeScript, Tailwind CSS 4, and React**, deployed to an Ubuntu VPS with Docker Compose and Caddy.
 
 ## Run locally
 
@@ -59,13 +59,18 @@ The supplied company logo is retained unchanged at `public/images/logo-grt.png`.
 
 `public/og.png` was generated with the built-in ImageGen tool. Prompt: a finished landscape social card in forest green, ivory, and lime, with a geometric ridge mark, a data center aisle, and the exact wording “GREEN RIDGE TECHNICS”, “Engineered for confidence.”, and “Testing. Inspection. Commissioning.” The generated card was reviewed for spelling and used as the social-sharing asset. The social card retains the presentation artwork.
 
-## Optional Sites build
+## VPS deployment
 
 For Ubuntu VPS deployment with Docker Compose and Caddy, see
 [deploy/README.md](deploy/README.md).
 
-```sh
-npm run build:sites
-```
+The unused Cloudflare/Sites preview adapter and D1 database templates have been
+removed. Historical hosting metadata in `.openai/hosting.json` is retained for
+reference only; this repository no longer builds or publishes that preview.
 
-This produces Worker-compatible output under `dist/` using the retained Sites adapter. Hosting information is stored in `.openai/hosting.json`. Standard deployment to any supported Next.js platform should use `npm run build` and `npm start` instead.
+## Dependency security
+
+Run `npm audit` after dependency changes. GitHub Actions checks dependency
+advisories, lint, and the production Docker image; Dependabot proposes weekly
+updates. See [the security review](deploy/SECURITY.md) for the patch versions,
+verification results, and instructions to apply them to the VPS.

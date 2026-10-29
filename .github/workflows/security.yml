@@ -1,0 +1,55 @@
+name: Security and production build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 2 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=low
+      - run: npm run lint
+      - name: Build production Docker image
+        run: >-
+          docker build --pull
+          --build-arg NEXT_PUBLIC_SITE_URL=https://www.greenridgetechnics.com
+          --build-arg SITE_INDEXABLE=false
+          -t green-ridge:ci .
+      - name: Test production container
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --name green-ridge-ci -p 127.0.0.1:3000:3000 \
+            -e SITE_INDEXABLE=false \
+            -e NEXT_PUBLIC_SITE_URL=https://www.greenridgetechnics.com \
+            green-ridge:ci
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:3000/id > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          TEST_URL=http://127.0.0.1:3000 npm test
+      - name: Container logs
+        if: failure()
+        run: docker logs green-ridge-ci || true
+      - name: Stop test container
+        if: always()
+        run: docker rm -f green-ridge-ci || true

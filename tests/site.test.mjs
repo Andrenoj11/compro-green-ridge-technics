@@ -93,6 +93,15 @@ test('all language JSON files have complete matching keys', async () => {
   assert.match(catalogs[3]['content.pt_green_ridge_technics_is_a_company'], /[\u4e00-\u9fff]/);
 });
 
+test('production image optimizer serves local images and rejects remote URLs', async () => {
+  const image = await get('/_next/image?url=%2Fimages%2Fdata-center.jpg&w=640&q=75');
+  assert.equal(image.status, 200);
+  assert.match(image.headers.get('content-type'), /^image\//);
+  assert.ok((await image.arrayBuffer()).byteLength > 0);
+  const blocked = await get('/_next/image?url=https%3A%2F%2Fexample.com%2Fimage.jpg&w=640&q=75');
+  assert.equal(blocked.status, 400);
+});
+
 test('about page includes the company profile, four missions, and director statement', async () => {
   const html = await (await get('/en/about')).text();
   for (const phrase of ['Mechanical, Electrical, and Plumbing (MEP)', 'Muhammad Zikri Pratama', 'Creating meaningful value.', 'To become a professional, reliable, and trusted company', 'Delivering the Best and Most Trusted Services', 'Developing and Empowering High-Quality Human Resources', 'Creating Broad Employment Opportunities', 'Upholding a Strong Commitment']) assert.ok(html.includes(phrase), phrase);
