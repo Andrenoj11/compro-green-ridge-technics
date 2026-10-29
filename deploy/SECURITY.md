@@ -50,12 +50,15 @@ Upstream references:
 `.github/workflows/security.yml` audits the complete dependency tree, lints,
 builds Docker, and tests its production container on pushes to main, pull requests,
 manual dispatch, and weekly schedules. Actions are pinned to commit SHAs; the
-workflow has read-only repository access, no deployment secrets, and no deploy
-step. Any reported severity fails the audit step. Configure branch protection
+verification job has read-only repository access and no deployment secrets.
+The later CI/CD extension uses separate publishing and environment-protected
+deployment jobs; see [CI-CD.md](CI-CD.md) for permissions and activation.
+Any reported severity fails the audit step. Configure branch protection
 to require its `verify` check if merges should be blocked automatically.
 
 Dependabot is configured for weekly npm, Dockerfile, and GitHub Actions updates.
-Updates require review and merge; they do not automatically deploy to the VPS.
+Updates require review and merge; after CI/CD is enabled, successful merges to
+main are deployed by that workflow.
 Enable Dependabot alerts/security updates in repository settings if not already
 enabled. Monitor the workflow failures and update PRs.
 

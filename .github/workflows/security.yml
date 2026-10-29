@@ -1,4 +1,4 @@
-name: Security and production build
+name: Security, build and deploy
 
 on:
   push:
@@ -10,6 +10,11 @@ on:
 
 permissions:
   contents: read
+
+# Never interrupt an in-progress production deployment.
+concurrency:
+  group: green-ridge-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   verify:
@@ -26,11 +31,17 @@ jobs:
       - run: npm ci
       - run: npm audit --audit-level=low
       - run: npm run lint
+      - name: Test deployment failure and recovery paths
+        run: >-
+          docker run --rm -e GRT_DEPLOY_TEST_CONTAINER=1
+          -v "$GITHUB_WORKSPACE:/workspace:ro"
+          node:22-bookworm-slim node /workspace/tests/ci-deploy.test.mjs
       - name: Build production Docker image
         run: >-
           docker build --pull
           --build-arg NEXT_PUBLIC_SITE_URL=https://www.greenridgetechnics.com
           --build-arg SITE_INDEXABLE=false
+          --label org.opencontainers.image.source=https://github.com/Andrenoj11/compro-green-ridge-technics
           -t green-ridge:ci .
       - name: Test production container
         shell: bash
@@ -47,9 +58,95 @@ jobs:
             sleep 1
           done
           TEST_URL=http://127.0.0.1:3000 npm test
+      - name: Export tested image
+        if: github.repository == 'Andrenoj11/compro-green-ridge-technics' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        run: docker save green-ridge:ci | gzip > /tmp/green-ridge-image.tar.gz
+      - name: Store tested image for publishing
+        if: github.repository == 'Andrenoj11/compro-green-ridge-technics' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: production-image
+          path: /tmp/green-ridge-image.tar.gz
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
       - name: Container logs
         if: failure()
         run: docker logs green-ridge-ci || true
       - name: Stop test container
         if: always()
         run: docker rm -f green-ridge-ci || true
+
+  publish:
+    needs: verify
+    if: github.repository == 'Andrenoj11/compro-green-ridge-technics' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      packages: write
+    outputs:
+      digest: ${{ steps.publish.outputs.digest }}
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: production-image
+          path: /tmp/green-ridge-artifact
+      - name: Publish the tested image
+        id: publish
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          image="ghcr.io/andrenoj11/compro-green-ridge-technics:${COMMIT_SHA}"
+          docker load -i /tmp/green-ridge-artifact/green-ridge-image.tar.gz
+          docker tag green-ridge:ci "$image"
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          docker push "$image"
+          reference=$(docker image inspect --format '{{index .RepoDigests 0}}' "$image")
+          digest="${reference##*@}"
+          [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]
+          printf 'digest=%s\n' "$digest" >> "$GITHUB_OUTPUT"
+          printf 'Published `%s@%s`\n' 'ghcr.io/andrenoj11/compro-green-ridge-technics' "$digest" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove registry credentials
+        if: always()
+        run: docker logout ghcr.io
+
+  deploy:
+    needs: publish
+    if: vars.VPS_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    permissions: {}
+    steps:
+      - name: Deploy by immutable image digest
+        env:
+          IMAGE_DIGEST: ${{ needs.publish.outputs.digest }}
+          VPS_HOST: ${{ vars.VPS_HOST }}
+          VPS_PORT: ${{ vars.VPS_PORT || '22' }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[a-f0-9]{64}$ ]]
+          [[ -n "$VPS_HOST" && -n "$VPS_SSH_KEY" && -n "$VPS_KNOWN_HOSTS" ]]
+          [[ "$VPS_PORT" =~ ^[0-9]+$ ]]
+          key_dir=$(mktemp -d)
+          trap 'rm -rf "$key_dir"' EXIT
+          printf '%s\n' "$VPS_SSH_KEY" > "$key_dir/key"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$key_dir/known_hosts"
+          chmod 600 "$key_dir/key" "$key_dir/known_hosts"
+          printf '%s\n' "$IMAGE_DIGEST" | ssh -T \
+            -i "$key_dir/key" -p "$VPS_PORT" \
+            -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$key_dir/known_hosts" \
+            -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
+            "grt-ci@$VPS_HOST"
+      - name: Check public HTTPS
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors --max-time 20 -o /dev/null https://www.greenridgetechnics.com/id

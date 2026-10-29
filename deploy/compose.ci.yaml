@@ -1,0 +1,25 @@
+# Installed root-owned at /etc/green-ridge-ci/compose.yaml.
+# Same project/network/service as the existing manual deployment.
+name: green-ridge
+services:
+  web:
+    image: ${APP_IMAGE:?Deployment script must supply APP_IMAGE}
+    pull_policy: never
+    restart: unless-stopped
+    init: true
+    environment:
+      NEXT_PUBLIC_SITE_URL: https://www.greenridgetechnics.com
+      SITE_INDEXABLE: "false"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/id', {signal: AbortSignal.timeout(5000)}).then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

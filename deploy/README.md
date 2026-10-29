@@ -48,8 +48,9 @@ Container readiness alone does not verify that public HTTPS works.
 
 ## Updates and recovery
 
-For this initial manual deployment, builds run on the VPS. GitHub Actions and
-registry-based deployments will be configured separately.
+For automated deployments, follow [CI-CD.md](CI-CD.md). The instructions below
+apply to the initial manual deployment only; after enabling CI, use the tested
+registry images instead of rebuilding on the VPS.
 
 Record the current commit before updating, then pull and rebuild:
 
@@ -57,11 +58,11 @@ Record the current commit before updating, then pull and rebuild:
 git rev-parse HEAD
 git pull --ff-only
 sudo docker compose up -d --build --wait --wait-timeout 180
-sudo docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+sudo docker compose up -d --force-recreate --no-deps caddy
 ```
 
-Reload Caddy after updating its bind-mounted configuration. If only the file
-contents change, Compose does not automatically recreate or reload Caddy.
+Recreate Caddy after updating its bind-mounted configuration. Git can replace
+the file inode, leaving a running container mounted to the previous file.
 
 There may be a short interruption while the web container is replaced. If an
 update fails, inspect logs, then restore the previously recorded commit and
