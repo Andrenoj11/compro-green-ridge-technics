@@ -75,7 +75,7 @@ open and inspect `sudo journalctl -u ssh --since '5 minutes ago'`.
 
 ## 4. Configure GitHub variables, secrets, and environment
 
-In the repository's Settings → Environments, create `production`. Restrict its
+In the repository's Settings → Environments, use `prod`. Restrict its
 deployment branches to `main`. Required reviewers are optional if manual
 approval on every deployment is desired.
 
@@ -88,7 +88,7 @@ variables** (not environment variables):
 | `VPS_PORT` | `22` |
 | `VPS_DEPLOY_ENABLED` | Leave unset until all setup steps are complete |
 
-Under environment `production`, add these **environment secrets**:
+Under environment `prod`, add these **environment secrets**:
 
 | Secret | Value |
 | --- | --- |

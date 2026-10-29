@@ -121,7 +121,7 @@ jobs:
     if: vars.VPS_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment: production
+    environment: prod
     permissions: {}
     steps:
       - name: Deploy by immutable image digest
