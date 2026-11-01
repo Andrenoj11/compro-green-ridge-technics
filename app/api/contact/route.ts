@@ -7,7 +7,8 @@ import { verifyTurnstile } from "@/lib/contact/turnstile";
 export const runtime = "nodejs";
 const stores = new Map<string, QuotaStore>();
 export const POST = createContactHandler({
-  config: getContactConfig, verify: verifyTurnstile, send: sendInquiry,
+  config: getContactConfig, verify: verifyTurnstile,
+  send: (inquiry, config) => sendInquiry(inquiry, config.recipients),
   store: config => {
     if (!stores.has(config.stateDir)) stores.set(config.stateDir, createQuotaStore(config.stateDir));
     return stores.get(config.stateDir)!;

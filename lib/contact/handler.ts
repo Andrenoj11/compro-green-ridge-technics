@@ -6,7 +6,7 @@ type Dependencies = {
   config: () => ContactConfig | null;
   verify: (token: string, ip: string, config: ContactConfig) => Promise<boolean>;
   store: (config: ContactConfig) => QuotaStore;
-  send: (inquiry: Inquiry) => Promise<void>;
+  send: (inquiry: Inquiry, config: ContactConfig) => Promise<void>;
   report: () => void;
 };
 function reply(status: number, code: string, retryAfter?: number) {
@@ -58,7 +58,7 @@ export function createContactHandler(deps: Dependencies) {
       if (reservation.kind === "uncertain") return reply(409, "uncertain");
       // Persist reservation before contacting SMTP. Failed or ambiguous delivery
       // keeps its budget; never automatically retry a possibly delivered message.
-      await deps.send(inquiry);
+      await deps.send(inquiry, config);
       await store.accepted(reservation.digest);
       return reply(200, "accepted");
     } catch {

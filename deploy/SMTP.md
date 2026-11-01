@@ -1,8 +1,12 @@
 # Google Workspace SMTP relay and contact form
 
 The site uses `smtp-relay.gmail.com:587`, requires STARTTLS, verifies Google's
-certificate, and sends only from/to `support@gr-tech.id`. The validated visitor
-address is Reply-To. The SMTP envelope is also fixed; there is no automatic
+certificate, and sends from/to `support@gr-tech.id`. Administrators can add internal
+recipients through `CONTACT_RECIPIENTS` in the VPS environment file. Support is
+always included; extra recipients receive BCC copies and are included in the SMTP
+envelope. There are at most five unique recipients, all within `gr-tech.id`.
+The visitor cannot choose recipients. The validated visitor
+address is Reply-To. There is no automatic
 visitor acknowledgement, attachment upload, HTML email or caller-selected target.
 No Gmail login password or App Password is used by the application.
 
@@ -84,9 +88,18 @@ sudo nano /etc/green-ridge-ci/contact.env
 
 ```dotenv
 CONTACT_ENABLED=true
+CONTACT_RECIPIENTS=support@gr-tech.id
 TURNSTILE_SITE_KEY=REPLACE_WITH_PRODUCTION_SITE_KEY
 TURNSTILE_SECRET_KEY=REPLACE_WITH_PRODUCTION_SECRET_KEY
 ```
+
+`CONTACT_RECIPIENTS` is an administrator-controlled comma-separated list of plain
+email addresses. Add the approved internal addresses to this line in the VPS
+editor. It defaults to support only when unset or empty; support is always
+included even if omitted from a nonempty list. Duplicate addresses are normalized
+and removed. Invalid addresses, control characters, external domains or more than
+five total destinations disable sending until corrected. Do not put real staff
+recipient lists in public repository templates or client-side variables.
 
 Recreate only web using its currently deployed immutable image. No build:
 
@@ -108,7 +121,10 @@ never share expanded Compose or `docker inspect` output containing secrets.
 Open `/id/contact`, complete Turnstile, submit one inquiry using a visitor address
 you control, and check `support@gr-tech.id` including spam. Verify From/To and
 that Reply targets the visitor. SMTP acceptance means Google accepted the message,
-not guaranteed inbox delivery. Check Workspace Email Log Search for delivery
+not guaranteed inbox delivery. With additional recipients configured, verify each
+mailbox receives the new test inquiry; changing recipients does not clear the
+existing duplicate-send history. Partial SMTP acceptance is reported as uncertain,
+with no automatic retry to already accepted recipients. Check Workspace Email Log Search for delivery
 issues, relay policy, and outbound port 587 connectivity from the VPS.
 
 An exact accepted inquiry repeated within 15 minutes returns success without

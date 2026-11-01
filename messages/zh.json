@@ -314,7 +314,7 @@
   "pages.approximate_project_schedule": "项目大致时间安排",
   "pages.available_drawings_or_specifications": "现有图纸或技术规范",
   "pages.forms_and_personal_information": "表单与个人信息",
-  "pages.the_contact_form_processes_information_only_on": "启用表单发送功能时，您的姓名、电子邮箱、公司、所选服务和留言将发送至我们的服务器，再通过 Google Workspace 转发至 support@gr-tech.id。您的电子邮箱用于回复。邮件保留在公司邮箱中，以便处理咨询。网站会保存计数和带密钥的数字指纹，用于滚动24小时的垃圾信息和重复发送检查。过期记录会在下次处理表单时删除；该限制记录不含留言内容或原始 IP 地址。启用发送时，Cloudflare Turnstile 会处理技术信息以完成安全验证。关闭发送时，表单仅生成本地摘要。请勿发送敏感信息。如有数据相关问题，请联系 support@gr-tech.id。",
+  "pages.the_contact_form_processes_information_only_on": "启用表单发送功能时，您的姓名、电子邮箱、公司、所选服务和留言将发送至我们的服务器，再通过 Google Workspace 转发至 support@gr-tech.id 及公司指定的内部收件人。您的电子邮箱用于回复。邮件保留在公司邮箱中，以便处理咨询。网站会保存计数和带密钥的数字指纹，用于滚动24小时的垃圾信息和重复发送检查。过期记录会在下次处理表单时删除；该限制记录不含留言内容或原始 IP 地址。启用发送时，Cloudflare Turnstile 会处理技术信息以完成安全验证。关闭发送时，表单仅生成本地摘要。请勿发送敏感信息。如有数据相关问题，请联系 support@gr-tech.id。",
   "pages.analytics_and_cookies": "分析与 Cookie",
   "pages.this_website_does_not_install_analytics_or": "本网站不安装分析或营销 Cookie。启用表单发送时，会使用 Cloudflare Turnstile 检测机器人。托管服务商可能会处理技术访问日志，以运行服务。图片和字体由网站自身资源提供。",
   "pages.information_updates": "信息更新",

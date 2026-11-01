@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import nodemailer from 'nodemailer';
-import { getContactConfig } from '../lib/contact/config.ts';
+import { contactRecipients, getContactConfig } from '../lib/contact/config.ts';
 import { createContactHandler } from '../lib/contact/handler.ts';
 import { relayOptions, sendInquiry } from '../lib/contact/mail.ts';
 import { createQuotaStore } from '../lib/contact/quota.ts';
@@ -12,7 +12,7 @@ import { verifyTurnstile } from '../lib/contact/turnstile.ts';
 import { clientAddress, clientNetwork, inquiryMail, parseInquiry, readBody } from '../lib/contact/validation.ts';
 import { auditFindings } from '../scripts/audit-security.mjs';
 
-const config = { origin: 'https://www.greenridgetechnics.com', siteKey: 'public-site-key', secret: 'private-secret', stateDir: '/tmp/unused' };
+const config = { origin: 'https://www.greenridgetechnics.com', siteKey: 'public-site-key', secret: 'private-secret', stateDir: '/tmp/unused', recipients: ['support@gr-tech.id'] };
 const valid = { name: 'A Customer', email: 'visitor@example.com', company: 'Example Ltd', service: 'testing', message: 'Please discuss our building system tests.', locale: 'id', token: 'challenge-token', website: '', consent: true };
 const inquiry = parseInquiry(valid);
 function request(data = valid, headers = {}) {
@@ -28,12 +28,20 @@ test('configuration is opt-in and refuses absent settings, HTTP origins and bypa
   const previous = { ...process.env };
   try {
     Object.assign(process.env, { CONTACT_ENABLED: 'true', NEXT_PUBLIC_SITE_URL: config.origin, TURNSTILE_SITE_KEY: config.siteKey, TURNSTILE_SECRET_KEY: config.secret });
+    process.env.CONTACT_RECIPIENTS = 'support@gr-tech.id';
     assert.equal(getContactConfig().siteKey, config.siteKey);
-    for (const [key, value] of [['CONTACT_ENABLED', 'false'], ['TURNSTILE_SECRET_KEY', ''], ['TURNSTILE_SITE_KEY', '1x00000000000000000000AA'], ['TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA'], ['NEXT_PUBLIC_SITE_URL', 'http://example.com'], ['NEXT_PUBLIC_SITE_URL', 'https://example.com/path']]) {
+    for (const [key, value] of [['CONTACT_ENABLED', 'false'], ['CONTACT_RECIPIENTS', 'outside@example.com'], ['TURNSTILE_SECRET_KEY', ''], ['TURNSTILE_SITE_KEY', '1x00000000000000000000AA'], ['TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA'], ['NEXT_PUBLIC_SITE_URL', 'http://example.com'], ['NEXT_PUBLIC_SITE_URL', 'https://example.com/path']]) {
       const old = process.env[key]; process.env[key] = value;
       assert.equal(getContactConfig(), null, key); process.env[key] = old;
     }
   } finally { for (const key of Object.keys(process.env)) if (!(key in previous)) delete process.env[key]; Object.assign(process.env, previous); }
+});
+
+test('recipient config preserves support, deduplicates addresses and rejects injection, external domains and excessive fan-out', () => {
+  assert.deepEqual(contactRecipients(undefined), ['support@gr-tech.id']);
+  assert.deepEqual(contactRecipients(''), ['support@gr-tech.id']);
+  assert.deepEqual(contactRecipients(' First@gr-tech.id, SUPPORT@gr-tech.id,first@gr-tech.id '), ['support@gr-tech.id', 'first@gr-tech.id']);
+  for (const input of ['first@gr-tech.id\r\nBcc: victim@gr-tech.id', 'person@example.com', 'person@evilgr-tech.id', 'A <person@gr-tech.id>', ',', 'first@gr-tech.id,', 'x'.repeat(1001), 'a@gr-tech.id,b@gr-tech.id,c@gr-tech.id,d@gr-tech.id,e@gr-tech.id']) assert.equal(contactRecipients(input), null, input);
 });
 
 test('input validation rejects header injection, missing consent, honeypots, bad services, oversized fields and tokens', () => {
@@ -144,7 +152,22 @@ test('SMTP envelope and MIME are fixed to support; visitor is Reply-To and conte
   assert.equal(relayOptions.requireTLS, true);
   assert.equal(relayOptions.tls.rejectUnauthorized, true);
   assert.equal(relayOptions.auth, undefined);
-  await assert.rejects(sendInquiry(inquiry, { sendMail: async () => ({ accepted: [], rejected: ['support@gr-tech.id'] }) }));
+  await assert.rejects(sendInquiry(inquiry, ['support@gr-tech.id'], { sendMail: async () => ({ accepted: [], rejected: ['support@gr-tech.id'] }) }));
+});
+
+test('additional configured recipients receive envelope/BCC copies without leaking into visible MIME headers', async () => {
+  const recipients = contactRecipients('first@gr-tech.id,second@gr-tech.id,third@gr-tech.id');
+  const parsed = parseInquiry({ ...valid, to: 'victim@example.com', recipients: ['victim@example.com'], bcc: ['victim@example.com'] });
+  const mail = inquiryMail(parsed, recipients);
+  assert.equal(mail.to, 'support@gr-tech.id');
+  assert.deepEqual(mail.envelope.to, recipients);
+  assert.equal(mail.bcc, undefined);
+  assert.equal(mail.replyTo.address, inquiry.email);
+  const mime = (await nodemailer.createTransport({ streamTransport: true, buffer: true }).sendMail(mail)).message.toString();
+  assert.doesNotMatch(mime, /Bcc:|first@gr-tech.id|second@gr-tech.id|third@gr-tech.id|victim@example.com/);
+  await sendInquiry(parsed, recipients, { sendMail: async () => ({ accepted: recipients, rejected: [] }) });
+  await assert.rejects(sendInquiry(parsed, recipients, { sendMail: async () => ({ accepted: recipients.slice(0, 3), rejected: [recipients[3]] }) }));
+  await assert.rejects(sendInquiry(parsed, recipients, { sendMail: async () => ({ accepted: ['support@gr-tech.id'], rejected: [] }) }));
 });
 
 function handler(overrides = {}) {
@@ -157,6 +180,17 @@ function handler(overrides = {}) {
   };
   return { run: createContactHandler(deps), calls };
 }
+
+test('HTTP delivery uses the server recipient config and holds partial delivery as uncertain', async () => {
+  const recipients = ['support@gr-tech.id', 'first@gr-tech.id'];
+  let deliveredTo;
+  const h = handler({ config: () => ({ ...config, recipients }), send: async (data, settings) => { assert.equal(data.to, undefined); deliveredTo = settings.recipients; } });
+  assert.equal((await h.run(request({ ...valid, to: 'victim@example.com', recipients: ['victim@example.com'] }))).status, 200);
+  assert.deepEqual(deliveredTo, recipients);
+  const partial = handler({ send: data => sendInquiry(data, recipients, { sendMail: async () => ({ accepted: ['support@gr-tech.id'], rejected: ['first@gr-tech.id'] }) }) });
+  assert.equal((await partial.run(request())).status, 503);
+  assert.equal(partial.calls.accepted, 0);
+});
 
 test('HTTP handler rejects disabled, cross-origin, invalid, oversized, missing-proxy and failed-challenge requests before SMTP', async () => {
   const disabled = handler({ config: () => null });

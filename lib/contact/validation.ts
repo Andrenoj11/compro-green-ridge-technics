@@ -27,11 +27,13 @@ export function parseInquiry(value: unknown): Inquiry | null {
   return { name, email, company, service: data.service, message: data.message.trim(), locale: data.locale, token };
 }
 
-export function inquiryMail(inquiry: Inquiry) {
+export function inquiryMail(inquiry: Inquiry, recipients: readonly string[] = [CONTACT_MAILBOX]) {
+  const destinations = [...new Set([CONTACT_MAILBOX, ...recipients])];
   return {
     from: { name: "Green Ridge Technics Website", address: CONTACT_MAILBOX },
     to: CONTACT_MAILBOX,
-    envelope: { from: CONTACT_MAILBOX, to: [CONTACT_MAILBOX] },
+    // Blind copies are envelope-only, so addresses never become MIME headers.
+    envelope: { from: CONTACT_MAILBOX, to: destinations },
     replyTo: { name: inquiry.name, address: inquiry.email },
     subject: "New website inquiry — Green Ridge Technics",
     text: `Website inquiry — Green Ridge Technics\n\nName: ${inquiry.name}\nEmail: ${inquiry.email}\nCompany: ${inquiry.company || "—"}\nService: ${services[inquiry.service]}\nLanguage: ${inquiry.locale}\n\n${inquiry.message}`,
