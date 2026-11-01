@@ -1,9 +1,18 @@
-import { t, locales, languageTags, openGraphLocales } from "./i18n";
+import { t, locales, languageTags, openGraphLocales, type MessageKey } from "./i18n";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { articles, m, pageInfo, paths, services, text, url, type Locale } from "./content";
 
 export const indexable = process.env.SITE_INDEXABLE === "true";
+
+const searchPages: Record<string, { title: MessageKey; description: MessageKey }> = {
+  "": { title: "seo.home.title", description: "seo.home.description" },
+  services: { title: "seo.services.title", description: "seo.home.description" },
+  "services/management": { title: "seo.management.title", description: "seo.management.description" },
+  "services/inspection": { title: "seo.inspection.title", description: "seo.inspection.description" },
+  "services/testing": { title: "seo.testing.title", description: "seo.testing.description" },
+  "services/commissioning": { title: "seo.commissioning.title", description: "seo.commissioning.description" },
+};
 
 export async function siteOrigin() {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
@@ -15,6 +24,7 @@ export async function siteOrigin() {
 
 export function routeInfo(path: string) {
   if (!paths.includes(path)) return null;
+  if (searchPages[path]) return { title: m(searchPages[path].title), description: m(searchPages[path].description) };
   if (!path) return { title: m("content.testing_inspection_commissioning"), description: m("content.green_ridge_technics_your_technical_partner_for") };
   if (pageInfo[path]) return pageInfo[path];
   const [section, slug] = path.split("/");

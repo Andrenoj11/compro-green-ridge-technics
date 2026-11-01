@@ -357,5 +357,18 @@
   "contact.verification_failed": "Verifikasi keamanan belum berhasil. Coba ulangi verifikasi atau hubungi kami melalui email.",
   "contact.invalid": "Periksa kembali informasi formulir dan lengkapi verifikasi keamanan.",
   "contact.uncertain": "Pengiriman belum dapat dikonfirmasi. Hindari mengirim berulang kali; Anda dapat menghubungi kami langsung melalui email.",
-  "contact.fallback": "Ringkasan tetap tersedia untuk disalin, diunduh, atau dikirim melalui tombol Email."
+  "contact.fallback": "Ringkasan tetap tersedia untuk disalin, diunduh, atau dikirim melalui tombol Email.",
+  "seo.home.title": "Jasa MEP di Jabodetabek & Batam",
+  "seo.home.description": "PT Green Ridge Technics melayani management, inspection, system test, dan commissioning sistem MEP untuk proyek di Jabodetabek dan Batam.",
+  "seo.services.title": "Layanan MEP: Management hingga Commissioning",
+  "seo.management.title": "Jasa Manajemen Proyek & Assessment MEP",
+  "seo.management.description": "Manajemen proyek dan commissioning, document control, engineering calculation, serta MEP assessment untuk proyek di Jabodetabek dan Batam.",
+  "seo.inspection.title": "Jasa Inspeksi Instalasi & Peralatan MEP",
+  "seo.inspection.description": "Inspeksi perpipaan, pengelasan, instalasi kabel, serta peralatan mechanical, electrical, dan fire untuk proyek di Jabodetabek dan Batam.",
+  "seo.testing.title": "Jasa Pengujian Sistem MEP & TAB",
+  "seo.testing.description": "Pengujian sistem MEP, TAB, kualitas udara dalam ruangan, room integrity, dan duct air leakage untuk fasilitas di Jabodetabek dan Batam.",
+  "seo.commissioning.title": "Jasa Commissioning Sistem MEP",
+  "seo.commissioning.description": "Commissioning sistem mechanical, electrical, fire, plumbing, dan BMS untuk fasilitas di Jabodetabek dan Batam.",
+  "coverage.title": "Wilayah layanan",
+  "coverage.description": "Melayani Jabodetabek (Jakarta, Bogor, Depok, Tangerang, dan Bekasi) serta Batam."
 }

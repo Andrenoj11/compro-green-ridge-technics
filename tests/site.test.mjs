@@ -3,6 +3,7 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 
 const origin = process.env.TEST_URL || 'http://localhost:3000';
+const indexable = process.env.TEST_INDEXABLE === 'true';
 const get = path => fetch(new URL(path, origin));
 const paths = ['', 'about', 'services', 'insights', 'gallery', 'tools', 'certifications', 'careers', 'contact', 'privacy', 'services/testing', 'services/inspection', 'services/commissioning', 'services/management', 'insights/commissioning-from-the-start', 'insights/understanding-tab', 'insights/efficient-building-systems'];
 const routes = new Set(paths.flatMap(path => ['id', 'en', 'ar', 'zh'].map(locale => `/${locale}${path ? `/${path}` : ''}`)));
@@ -30,7 +31,7 @@ test('all 68 pages render meaningful, localized HTML and valid internal links', 
     assert.match(html, /hrefLang="ar"/i, path);
     assert.match(html, /hrefLang="zh-CN"/i, path);
     assert.doesNotMatch(html, /href="\/(id|en|ar|zh)\/projects(?:\/|")/, path);
-    assert.match(html, /name="robots" content="noindex, nofollow"/, path);
+    assert.match(html, indexable ? /name="robots" content="index, follow"/ : /name="robots" content="noindex, nofollow"/, path);
     assert.match(html, /property="og:image"/, path);
     assert.doesNotMatch(html, /class="(?:footer-draft|footer-wordmark|about-image-note|photo-note|form-note)"/, path);
     assert.doesNotMatch(html, /Presentation version|Presentation mode|Illustrative photography|INFORMATION IN PREPARATION|coming here soon|Versi presentasi|Mode presentasi|Foto ilustrasi|INFORMASI DALAM PERSIAPAN|صور توضيحية|النسخة التعريفية|المعلومات قيد الإعداد|示意图片|展示版本|信息准备中/i, path);
@@ -43,7 +44,7 @@ test('all 68 pages render meaningful, localized HTML and valid internal links', 
   }
 });
 
-test('sitemap lists all four locales and preview robots prevent indexing', async () => {
+test('sitemap lists all four locales and robots follow the runtime indexing policy', async () => {
   const sitemapResponse = await get('/sitemap.xml');
   assert.equal(sitemapResponse.status, 200);
   const sitemap = await sitemapResponse.text();
@@ -55,8 +56,35 @@ test('sitemap lists all four locales and preview robots prevent indexing', async
   assert.match(sitemap, /hreflang="zh-CN"/);
   assert.doesNotMatch(sitemap, /\/projects/);
   const robots = await (await get('/robots.txt')).text();
-  assert.match(robots, /Disallow: \//);
+  if (indexable) {
+    assert.match(robots, /^Allow: \/$/m);
+    assert.match(robots, /^Disallow: \/api\/$/m);
+    assert.doesNotMatch(robots, /^Disallow: \/$/m);
+  } else assert.match(robots, /^Disallow: \/$/m);
   assert.match(robots, /Sitemap: http/);
+});
+
+test('service SEO targets the approved areas and preserves the four company-profile service groups', async () => {
+  for (const path of ['', 'services', 'services/management', 'services/inspection', 'services/testing', 'services/commissioning']) {
+    const html = await (await get(`/id${path ? `/${path}` : ''}`)).text();
+    const description = html.match(/<meta name="description" content="([^"]+)"/)[1];
+    assert.match(description, /Jabodetabek/);
+    assert.match(description, /Batam/);
+    assert.match(html, /name="robots"/);
+    assert.match(html, /Jabodetabek \(Jakarta, Bogor, Depok, Tangerang, dan Bekasi\)|management, inspection, system test, dan commissioning/);
+    const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
+    const organization = graph.find(item => item['@type'] === 'Organization');
+    assert.deepEqual(organization.areaServed, ['Jabodetabek', 'Batam']);
+    assert.equal(organization.address.addressLocality, 'Jakarta Selatan');
+    assert.equal(organization.telephone, undefined);
+    assert.equal(organization.legalName, 'PT Green Ridge Technics');
+    if (path.startsWith('services/')) {
+      const service = graph.find(item => item['@type'] === 'Service');
+      assert.ok(service);
+      assert.deepEqual(service.areaServed, ['Jabodetabek', 'Batam']);
+      assert.equal(service.provider['@id'], organization['@id']);
+    }
+  }
 });
 
 test('unknown pages and unsupported languages return 404', async () => {

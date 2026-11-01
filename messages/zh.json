@@ -357,5 +357,18 @@
   "contact.verification_failed": "安全验证未成功。请重新验证，或通过电子邮件联系我们。",
   "contact.invalid": "请检查表单信息并完成安全验证。",
   "contact.uncertain": "无法确认是否投递成功。请避免重复提交；您可以直接通过电子邮件联系我们。",
-  "contact.fallback": "您仍可复制、下载摘要，或使用电子邮件按钮发送。"
+  "contact.fallback": "您仍可复制、下载摘要，或使用电子邮件按钮发送。",
+  "seo.home.title": "雅加达都市圈与巴淡岛 MEP 服务",
+  "seo.home.description": "PT Green Ridge Technics 为雅加达都市圈（Jabodetabek）与巴淡岛（Batam）的项目提供 MEP 管理、检验、系统测试和调试服务。",
+  "seo.services.title": "MEP 管理、检验、测试与调试服务",
+  "seo.management.title": "项目管理与 MEP 评估服务",
+  "seo.management.description": "为雅加达都市圈（Jabodetabek）与巴淡岛（Batam）的项目提供项目与调试管理、文件控制、工程计算及 MEP 评估服务。",
+  "seo.inspection.title": "MEP 安装与设备检验服务",
+  "seo.inspection.description": "为雅加达都市圈（Jabodetabek）与巴淡岛（Batam）的项目提供管道、焊接、电缆安装及机械、电气和消防设备检验服务。",
+  "seo.testing.title": "MEP 系统测试与 TAB 服务",
+  "seo.testing.description": "为雅加达都市圈（Jabodetabek）与巴淡岛（Batam）的设施提供 MEP 系统测试、TAB、室内空气质量、房间密封完整性及风管漏风测试。",
+  "seo.commissioning.title": "MEP 系统调试服务",
+  "seo.commissioning.description": "为雅加达都市圈（Jabodetabek）与巴淡岛（Batam）的设施提供机械、电气、消防、给排水及楼宇管理系统 BMS 调试服务。",
+  "coverage.title": "服务区域",
+  "coverage.description": "服务雅加达都市圈（Jabodetabek：雅加达、茂物、德波、唐格朗和勿加泗）及巴淡岛（Batam）。"
 }

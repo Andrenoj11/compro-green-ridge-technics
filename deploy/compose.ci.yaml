@@ -12,7 +12,7 @@ services:
         required: false
     environment:
       NEXT_PUBLIC_SITE_URL: https://www.greenridgetechnics.com
-      SITE_INDEXABLE: "false"
+      SITE_INDEXABLE: "true"
       CONTACT_STATE_DIR: /app/contact-state
     volumes:
       - contact_state:/app/contact-state

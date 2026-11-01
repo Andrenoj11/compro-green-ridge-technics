@@ -176,7 +176,7 @@ export function ServiceDetail({
         locale={locale}
         eyebrow={s.name}
         title={s.tagline}
-        description={s.description}
+        description={{ ...s.description, [locale]: `${text(s.description, locale)} ${t(locale, "coverage.description")}` }}
       />
       <div className="container detail-hero-image">
         <Photo src={s.image} locale={locale} priority />
@@ -618,6 +618,8 @@ function Contact({ locale }: { locale: Locale }) {
             </div>
           </div>
           <div className="contact-checklist">
+            <h3>{t(locale, "coverage.title")}</h3>
+            <p>{t(locale, "coverage.description")}</p>
             <h3>
               {t(locale, "pages.for_a_focused_conversation")}
             </h3>
@@ -674,7 +676,7 @@ export function ContentPage({
   }
   return (
     <>
-      <PageHero locale={locale} {...info} />
+      <PageHero locale={locale} {...info} description={path === "services" ? m("seo.home.description") : info.description} />
       {path === "services" ? (
         <Services locale={locale} />
       ) : path === "projects" ? (

@@ -8,6 +8,10 @@ No inquiry database is required. The optional Google Workspace SMTP relay and
 Turnstile form are documented in [SMTP.md](SMTP.md); sending remains disabled
 until production setup is complete. Contact quotas persist in a named volume.
 
+For approved service areas, production indexing, and Google Search Console setup,
+follow [SEO.md](SEO.md). Updating the installed CI Compose file is required when
+changing the production indexing policy; a code push alone does not update it.
+
 ## First deployment
 
 Prerequisites: Docker Engine and Compose installed; SSH access verified; TCP

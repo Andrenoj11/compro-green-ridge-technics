@@ -16,6 +16,10 @@ For contact email activation, follow [SMTP.md](SMTP.md). Contact settings are
 installed separately in a root-owned VPS file, and quotas persist in a named
 volume. They are not GitHub Actions secrets or Docker build arguments.
 
+For search indexing, follow [SEO.md](SEO.md). CI tests the same image with indexing
+off and on; production indexing is controlled by the installed root-owned Compose
+configuration, which must be updated separately when its policy changes.
+
 ## 1. Publish the first image
 
 Commit and push the deployment changes to `main`, then open GitHub → Actions →

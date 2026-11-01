@@ -60,6 +60,21 @@ jobs:
             sleep 1
           done
           TEST_URL=http://127.0.0.1:3000 npm test
+      - name: Test indexing enabled at runtime on the same image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --name green-ridge-indexing -p 127.0.0.1:3001:3000 \
+            -e SITE_INDEXABLE=true \
+            -e NEXT_PUBLIC_SITE_URL=https://www.greenridgetechnics.com \
+            green-ridge:ci
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:3001/id > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          TEST_URL=http://127.0.0.1:3001 TEST_INDEXABLE=true npm test
       - name: Export tested image
         if: github.repository == 'Andrenoj11/compro-green-ridge-technics' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: docker save green-ridge:ci | gzip > /tmp/green-ridge-image.tar.gz
@@ -74,10 +89,12 @@ jobs:
           if-no-files-found: error
       - name: Container logs
         if: failure()
-        run: docker logs green-ridge-ci || true
+        run: |
+          docker logs green-ridge-ci || true
+          docker logs green-ridge-indexing || true
       - name: Stop test container
         if: always()
-        run: docker rm -f green-ridge-ci || true
+        run: docker rm -f green-ridge-ci green-ridge-indexing || true
 
   publish:
     needs: verify

@@ -357,5 +357,18 @@
   "contact.verification_failed": "Security verification was unsuccessful. Please retry verification or contact us by email.",
   "contact.invalid": "Please check the form details and complete security verification.",
   "contact.uncertain": "We could not confirm delivery. Please avoid repeated submissions; you can contact us directly by email.",
-  "contact.fallback": "Your brief remains available to copy, download, or send using the Email button."
+  "contact.fallback": "Your brief remains available to copy, download, or send using the Email button.",
+  "seo.home.title": "MEP Services in Jabodetabek & Batam",
+  "seo.home.description": "PT Green Ridge Technics provides MEP management, inspection, system testing, and commissioning for projects in Jabodetabek and Batam.",
+  "seo.services.title": "MEP Management, Inspection, Testing & Commissioning",
+  "seo.management.title": "Project Management & MEP Assessment Services",
+  "seo.management.description": "Project and commissioning management, document control, engineering calculation, and MEP assessment for projects in Jabodetabek and Batam.",
+  "seo.inspection.title": "MEP Installation & Equipment Inspection",
+  "seo.inspection.description": "Inspection of piping, welding, cable installations, and mechanical, electrical, and fire equipment for projects in Jabodetabek and Batam.",
+  "seo.testing.title": "MEP System Testing & TAB Services",
+  "seo.testing.description": "MEP system testing, TAB, indoor air quality, room integrity, and duct air leakage testing for facilities in Jabodetabek and Batam.",
+  "seo.commissioning.title": "MEP Commissioning Services",
+  "seo.commissioning.description": "Commissioning of mechanical, electrical, fire, plumbing, and BMS systems for facilities in Jabodetabek and Batam.",
+  "coverage.title": "Service areas",
+  "coverage.description": "Serving Jabodetabek (Jakarta, Bogor, Depok, Tangerang, and Bekasi) and Batam."
 }

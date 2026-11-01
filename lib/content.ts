@@ -8,6 +8,7 @@ export const company = {
   email: "support@gr-tech.id",
   phone: "",
   address: m("content.jl_bintaro_raya_selatan_no_8_rt"),
+  serviceAreas: ["Jabodetabek", "Batam"],
 };
 
 export const navigation = [
