@@ -7,9 +7,15 @@ services:
     pull_policy: never
     restart: unless-stopped
     init: true
+    env_file:
+      - path: /etc/green-ridge-ci/contact.env
+        required: false
     environment:
       NEXT_PUBLIC_SITE_URL: https://www.greenridgetechnics.com
       SITE_INDEXABLE: "false"
+      CONTACT_STATE_DIR: /app/contact-state
+    volumes:
+      - contact_state:/app/contact-state
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
     healthcheck:
@@ -23,3 +29,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+volumes:
+  contact_state:

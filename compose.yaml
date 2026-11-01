@@ -12,6 +12,12 @@ services:
     environment:
       NEXT_PUBLIC_SITE_URL: https://www.${SITE_DOMAIN:?Set SITE_DOMAIN in .env}
       SITE_INDEXABLE: ${SITE_INDEXABLE:-false}
+      CONTACT_ENABLED: ${CONTACT_ENABLED:-false}
+      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+      CONTACT_STATE_DIR: /app/contact-state
+    volumes:
+      - contact_state:/app/contact-state
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/id', {signal: AbortSignal.timeout(5000)}).then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
       interval: 30s
@@ -46,5 +52,6 @@ services:
         max-file: "3"
 
 volumes:
+  contact_state:
   caddy_data:
   caddy_config:

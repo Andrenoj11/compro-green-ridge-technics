@@ -1,5 +1,33 @@
 # Dependency security review — 29 October 2026
 
+## Follow-up — 1 November 2026
+
+The SMTP relay implementation adds Nodemailer and its types. Production
+`npm audit --omit=dev --audit-level=low` reports **zero** findings. The full
+audit currently reports **15 moderate vulnerable-package entries**, tracing to
+one advisory in development-only lint tooling:
+[GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249).
+
+The advisory was added/reviewed on 30 October and declares all minimatch versions
+below 11.0.1 affected, but its described attack is in `firstPhasePreProcess` with
+`optimizationLevel >= 2`. The installed **minimatch 3.1.5** has neither that
+method nor that option; this source was inspected locally. Replacing it with
+v11 breaks the callable CommonJS API expected by existing ESLint plugins.
+The compatible newer branch used by typescript-eslint is overridden to patched
+minimatch 11.0.1 or later; lint/typecheck/build validate compatibility.
+
+`scripts/audit-security.mjs` therefore permits only this exact advisory on
+development-only, exact-version 3.1.5 nodes. This is an explicit reviewed
+non-applicability decision, **not a zero-finding full audit**. The exception
+expires on **1 December 2026 UTC**, requiring review or an upstream-compatible
+fix. Any runtime occurrence, changed version, other advisory, malformed audit
+report or unavailable registry still fails CI. The separate runtime audit
+continues to reject every severity without exceptions. Tests cover these gates.
+
+Contact safeguards and operational boundaries are documented in [SMTP.md](SMTP.md).
+Live Workspace relay authorization and a real production Turnstile challenge
+must still be tested after the administrator configures them.
+
 ## Result
 
 | Audit scope | Before | After |
@@ -53,7 +81,8 @@ manual dispatch, and weekly schedules. Actions are pinned to commit SHAs; the
 verification job has read-only repository access and no deployment secrets.
 The later CI/CD extension uses separate publishing and environment-protected
 deployment jobs; see [CI-CD.md](CI-CD.md) for permissions and activation.
-Any reported severity fails the audit step. Configure branch protection
+Any unreviewed reported severity fails the audit step; see the time-bounded,
+development-only follow-up above. Configure branch protection
 to require its `verify` check if merges should be blocked automatically.
 
 Dependabot is configured for weekly npm, Dockerfile, and GitHub Actions updates.

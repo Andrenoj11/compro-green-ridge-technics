@@ -44,7 +44,9 @@ import {
   ServiceIcon,
   CallToAction,
 } from "./ui";
-import { ProjectGrid, Gallery, ContactForm } from "./interactive";
+import { ProjectGrid, Gallery } from "./interactive";
+import { ContactForm } from "./contact-form";
+import { getContactConfig } from "@/lib/contact/config";
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
@@ -632,7 +634,7 @@ function Contact({ locale }: { locale: Locale }) {
             ))}
           </div>
         </aside>
-        <ContactForm locale={locale} />
+        <ContactForm locale={locale} siteKey={getContactConfig()?.siteKey || null} />
       </div>
     </section>
   );

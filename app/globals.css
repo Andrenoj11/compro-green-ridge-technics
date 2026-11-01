@@ -278,3 +278,9 @@ html[lang=zh] .about-page h1,html[lang=zh] .about-page h2{letter-spacing:0;line-
 .footer-email{display:flex;align-items:center;gap:10px;width:fit-content;max-width:100%;margin-block-start:20px;font-size:var(--text-small);line-height:1.7;color:#c5d2c2;transition:color .2s}
 .footer-email>svg{flex:none}
 .footer-email>span{min-width:0;overflow-wrap:anywhere}
+
+/* Contact form field group and bot verification. */
+.contact-fields{border:0;margin:0;padding:0;min-inline-size:0}
+.contact-trap{position:absolute;inset-inline-start:-10000px;width:1px;height:1px;overflow:hidden}
+.contact-verification{margin-block:18px;min-height:65px}
+.contact-fields:disabled{opacity:.8}

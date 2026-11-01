@@ -93,6 +93,16 @@ test('all language JSON files have complete matching keys', async () => {
   assert.match(catalogs[3]['content.pt_green_ridge_technics_is_a_company'], /[\u4e00-\u9fff]/);
 });
 
+test('contact sending stays disabled without production configuration and never claims delivery', async () => {
+  const response = await fetch(new URL('/api/contact', origin), {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}',
+  });
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), { ok: false, code: 'unavailable' });
+  const html = await (await get('/en/contact')).text();
+  assert.doesNotMatch(html, /challenges\.cloudflare\.com|private-secret/);
+});
+
 test('production image optimizer serves local images and rejects remote URLs', async () => {
   const image = await get('/_next/image?url=%2Fimages%2Fdata-center.jpg&w=640&q=75');
   assert.equal(image.status, 200);

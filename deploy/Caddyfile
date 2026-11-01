@@ -1,6 +1,12 @@
 www.{$SITE_DOMAIN} {
 	encode zstd gzip
-	reverse_proxy web:3000
+	@contact path /api/contact
+	request_body @contact {
+		max_size 16KiB
+	}
+	reverse_proxy web:3000 {
+		header_up X-GRT-Client-IP {remote_host}
+	}
 }
 
 {$SITE_DOMAIN} {

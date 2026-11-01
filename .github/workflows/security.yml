@@ -29,8 +29,10 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
-      - run: npm audit --audit-level=low
+      - run: npm audit --omit=dev --audit-level=low
+      - run: npm run audit:security
       - run: npm run lint
+      - run: npm run test:contact
       - name: Test deployment failure and recovery paths
         run: >-
           docker run --rm -e GRT_DEPLOY_TEST_CONTAINER=1

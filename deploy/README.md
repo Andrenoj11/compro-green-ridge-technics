@@ -4,7 +4,9 @@ This configuration runs the Next.js standalone server as the non-root `node`
 user behind Caddy. Only Caddy publishes host ports (TCP 80 and 443). Docker
 published ports can bypass UFW, so do not add a public port mapping to `web`.
 Caddy certificate state persists in named volumes; container logs are rotated.
-No database or email sending service is configured yet.
+No inquiry database is required. The optional Google Workspace SMTP relay and
+Turnstile form are documented in [SMTP.md](SMTP.md); sending remains disabled
+until production setup is complete. Contact quotas persist in a named volume.
 
 ## First deployment
 
