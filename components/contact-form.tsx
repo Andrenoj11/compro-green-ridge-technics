@@ -1,13 +1,17 @@
 "use client";
 
+import { useMotionPreference } from "./motion-preference";
+
 import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Check, Copy, Download, Mail } from "lucide-react";
 import { company, m, services, text, url, type Locale } from "@/lib/content";
 import { t } from "@/lib/i18n";
 import { Turnstile } from "./turnstile";
+import { motion } from "motion/react";
 
 export function ContactForm({ locale, siteKey }: { locale: Locale; siteKey: string | null }) {
+  const reduced = useMotionPreference();
   const [summary, setSummary] = useState("");
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
@@ -74,14 +78,14 @@ export function ContactForm({ locale, siteKey }: { locale: Locale; siteKey: stri
         {enabled && <div className="contact-trap" aria-hidden="true"><label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></div>}
         <label className="consent"><input name="consent" type="checkbox" required /><span>{t(locale, enabled ? "contact.consent" : "interactive.i_understand_this_form_prepares_a_local")} {enabled && <Link href={url(locale, "privacy")}>{t(locale, "footer.privacy")}</Link>}</span></label>
         {siteKey && status !== "accepted" && <Turnstile siteKey={siteKey} locale={locale} resetKey={resetKey} onToken={setToken} />}
-        <button type="submit" className="button button-green" disabled={enabled && !token}>
+        <motion.button type="submit" className="button button-green" disabled={enabled && !token} whileTap={reduced ? undefined : { scale: .98 }}>
           <span>{t(locale, enabled ? status === "sending" ? "contact.sending" : status === "accepted" ? "contact.sent" : "contact.send" : "interactive.prepare_project_brief")}</span><ArrowUpRight size={18} />
-        </button>
+        </motion.button>
       </fieldset>
     </form>
-    {summary && <div className="form-result" ref={result} tabIndex={-1} role="status">
+    {summary && <motion.div className="form-result" ref={result} tabIndex={-1} role="status" initial={{ opacity: 0, y: reduced ? 0 : 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .3 }}>
       <div className="result-title"><Check size={22} /><h3>{t(locale, status === "accepted" ? "contact.sent" : "interactive.your_brief_is_ready")}</h3></div>
-      <p>{t(locale, enabled ? status === "accepted" ? "contact.accepted" : status === "sending" ? "contact.sending" : "contact.fallback" : "interactive.no_message_has_been_sent_copy_or")}</p>
+      <motion.p key={status} initial={{ opacity: .4 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0 : .2 }}>{t(locale, enabled ? status === "accepted" ? "contact.accepted" : status === "sending" ? "contact.sending" : "contact.fallback" : "interactive.no_message_has_been_sent_copy_or")}</motion.p>
       {error && <p role="alert">{error}</p>}
       <pre>{summary}</pre>
       <div className="result-actions">
@@ -90,6 +94,6 @@ export function ContactForm({ locale, siteKey }: { locale: Locale; siteKey: stri
         {company.email && <a className="button button-outline" href={`mailto:${company.email}?subject=${encodeURIComponent("Project inquiry — Green Ridge Technics")}&body=${encodeURIComponent(summary)}`}><Mail size={17} />{t(locale, "ui.email")}</a>}
       </div>
       {copyError && <p>{t(locale, "interactive.automatic_copying_is_unavailable_use_download_or")}</p>}
-    </div>}
+    </motion.div>}
   </div>;
 }

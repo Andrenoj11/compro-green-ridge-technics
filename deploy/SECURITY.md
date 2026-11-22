@@ -1,5 +1,14 @@
 # Dependency security review — 29 October 2026
 
+## Follow-up — 22 November 2026
+
+The animation update adds Motion 14.14.0 and Anime.js 4.5.0. Its dependency audit
+reported new moderate advisories against the previously installed Next.js
+16.4.3. Next.js and eslint-config-next are updated together to 16.4.6. The full
+`npm run audit:security` now reports zero findings, without using the dev-only
+exception below. These results describe local dependencies, not the deployed VPS.
+Use the existing [CI deployment workflow](CI-CD.md) to release the tested image.
+
 ## Follow-up — 1 November 2026
 
 The SMTP relay implementation adds Nodemailer and its types. Production
@@ -105,7 +114,7 @@ sudo docker compose ps
 curl -I https://www.greenridgetechnics.com/id
 ```
 
-Expected Next.js version: `16.4.3`; the web container should be healthy and the
+Expected Next.js version for the latest local update: `16.4.6`; the web container should be healthy and the
 public page should return HTTP 200. Existing `.env`, Caddy certificates, and
 Google Workspace DNS settings are unchanged. Keep the previous release reference
 for recovery, but do not treat reverting to the vulnerable release as a permanent

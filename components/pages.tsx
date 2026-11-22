@@ -47,6 +47,7 @@ import {
 import { ProjectGrid, Gallery } from "./interactive";
 import { ContactForm } from "./contact-form";
 import { getContactConfig } from "@/lib/contact/config";
+import { EngineeringAccent } from "./engineering-motion";
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
@@ -175,7 +176,7 @@ export function ServiceDetail({
       <PageHero
         locale={locale}
         eyebrow={s.name}
-        title={s.tagline}
+        title={s.heading}
         description={{ ...s.description, [locale]: `${text(s.description, locale)} ${t(locale, "coverage.description")}` }}
       />
       <div className="container detail-hero-image">
@@ -185,10 +186,10 @@ export function ServiceDetail({
         <div className="container detail-layout">
           <div className="detail-body">
             <Eyebrow>{t(locale, "pages.about_the_service")}</Eyebrow>
-            <h2>
-              {t(locale, "pages.understand_the_need_verify_the_performance")}
-            </h2>
-            <p>{text(s.detail, locale)}</p>
+            <h2>{text(s.tagline, locale)}</h2>
+            <p>{text(s.guide.overview, locale)}</p>
+            <h3>{t(locale, "service.when_heading")}</h3>
+            <p>{text(s.guide.when, locale)}</p>
             <h3>{t(locale, "pages.service_scope")}</h3>
             <ul className="large-scope-list">
               {s.scope.map((item, index) => (
@@ -199,8 +200,18 @@ export function ServiceDetail({
                 </li>
               ))}
             </ul>
+            <h3>{t(locale, "service.process_heading")}</h3>
+            <p>{text(s.guide.process, locale)}</p>
             <h3>{t(locale, "pages.what_you_receive")}</h3>
-            <p>{text(s.deliverable, locale)}</p>
+            <p>{text(s.guide.outputs, locale)}</p>
+            <h3>{t(locale, "service.prepare_heading")}</h3>
+            <p>{text(s.guide.prepare, locale)}</p>
+            <h3>{t(locale, "service.faq_heading")}</h3>
+            <details className="faq-item">
+              <summary>{text(s.guide.question, locale)}<span aria-hidden="true" /></summary>
+              <p>{text(s.guide.answer, locale)}</p>
+            </details>
+            {(slug === "testing" || slug === "commissioning") && <div className="service-reading"><h3>{t(locale, "service.related_heading")}</h3><TextLink href={url(locale, `insights/${slug === "testing" ? "understanding-tab" : "commissioning-from-the-start"}`)}>{text(articles.find(article => article.slug === (slug === "testing" ? "understanding-tab" : "commissioning-from-the-start"))!.title, locale)}</TextLink></div>}
           </div>
           <aside className="detail-sidebar">
             <span className="mini-label">
@@ -216,6 +227,9 @@ export function ServiceDetail({
               {t(locale, "pages.start_a_conversation")}
             </ButtonLink>
             <div className="sidebar-links">
+              <Link href={url(locale, "certifications")}>
+                {t(locale, "service.quality_link")}<ArrowUpRight size={18} />
+              </Link>
               <h4>{t(locale, "pages.other_services")}</h4>
               {services
                 .filter((item) => item.slug !== slug)
@@ -453,6 +467,7 @@ function Equipment({ locale }: { locale: Locale }) {
           {items.map((item) => (
             <article className="equipment-card" key={item.name.en} data-reveal>
               <item.Icon size={33} strokeWidth={1.3} />
+              <EngineeringAccent variant="measurement" />
               <h2>{text(item.name, locale)}</h2>
               <p>{text(item.detail, locale)}</p>
               <span>{text(item.examples,locale)}</span>
@@ -474,16 +489,28 @@ function Certifications({ locale }: { locale: Locale }) {
               <FileCheck2 size={40} strokeWidth={1} />
             </div>
             <div>
+              <EngineeringAccent variant="documents" />
               <h2>
                 {t(locale, "pages.quality_and_professional_standards")}
               </h2>
-              <p>
-                {t(locale, "pages.discuss_documentation_and_competency_requirements")}
-              </p>
+              <p>{t(locale, "pages.discuss_documentation_and_competency_requirements")}</p>
+              <p>{t(locale, "quality.cta_copy")}</p>
               <ButtonLink href={url(locale, "contact")}>
                 {t(locale, "pages.discuss_project_requirements")}
               </ButtonLink>
             </div>
+          </div>
+        </div>
+      </section>
+      <section className="section quality-documents">
+        <div className="container">
+          <SectionHeading locale={locale} label={m("content.quality_competence")} title={m("quality.documents_heading")} description={m("quality.documents_intro")} />
+          <div className="values-grid three">
+            {[
+              { Icon: FileCheck2, title: m("quality.company_title"), copy: m("quality.company_copy") },
+              { Icon: GraduationCap, title: m("quality.people_title"), copy: m("quality.people_copy") },
+              { Icon: Gauge, title: m("quality.trace_title"), copy: m("quality.trace_copy") },
+            ].map(item => <article className="value-card" key={item.title.en}><item.Icon size={28} strokeWidth={1.3} /><h3>{text(item.title, locale)}</h3><p>{text(item.copy, locale)}</p></article>)}
           </div>
         </div>
       </section>
@@ -676,7 +703,7 @@ export function ContentPage({
   }
   return (
     <>
-      <PageHero locale={locale} {...info} description={path === "services" ? m("seo.home.description") : info.description} />
+      <PageHero locale={locale} {...info} title={path === "services" ? m("seo.services.title") : info.title} description={path === "services" ? m("seo.home.description") : info.description} />
       {path === "services" ? (
         <Services locale={locale} />
       ) : path === "projects" ? (

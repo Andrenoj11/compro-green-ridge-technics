@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Activity, ScanLine, Settings2, Leaf, ArrowRight } from "lucide-react";
 import { type Locale, type Localized, text, url, imageAlt } from "@/lib/content";
+import { AnimatedLink } from "./motion";
+import { EngineeringAccent } from "./engineering-motion";
 
 export function Brand({ light = false }: { light?: boolean }) {
   return <span className={`brand ${light ? "brand-light" : ""}`}><Image src="/images/logo-grt.svg" alt="Green Ridge Technics" width={1723} height={664} sizes="(max-width: 700px) 185px, 232px" className="brand-image" /></span>;
@@ -14,7 +16,7 @@ export function Photo({ src, locale, className = "", priority = false }: { src: 
 }
 
 export function ButtonLink({ href, children, variant = "green", className = "" }: { href: string; children: React.ReactNode; variant?: "green" | "lime" | "outline" | "white"; className?: string }) {
-  return <Link href={href} className={`button button-${variant} ${className}`}><span>{children}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>;
+  return <AnimatedLink href={href} className={`button button-${variant} ${className}`}><span>{children}</span><ArrowUpRight size={18} aria-hidden="true" /></AnimatedLink>;
 }
 
 export function TextLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -35,7 +37,7 @@ export function ServiceIcon({ name, size = 29 }: { name: string; size?: number }
 }
 
 export function PageHero({ locale, eyebrow, title, description }: { locale: Locale; eyebrow: Localized; title: Localized; description: Localized }) {
-  return <section className="page-hero"><div className="container"><div className="breadcrumbs"><Link href={url(locale)}>{t(locale, "content.home")}</Link><span>/</span><span>{text(eyebrow, locale)}</span></div><div className="page-hero-inner"><div><Eyebrow>{text(eyebrow, locale)}</Eyebrow><h1>{text(title, locale)}</h1></div><p>{text(description, locale)}</p></div></div><div className="hero-watermark" aria-hidden="true">GRT</div></section>;
+  return <section className="page-hero"><div className="container"><div className="breadcrumbs"><Link href={url(locale)}>{t(locale, "content.home")}</Link><span>/</span><span>{text(eyebrow, locale)}</span></div><div className="page-hero-inner"><div><Eyebrow>{text(eyebrow, locale)}</Eyebrow><h1>{text(title, locale)}</h1></div><div className="page-hero-context"><p>{text(description, locale)}</p><EngineeringAccent key={text(title, locale)} /></div></div></div><div className="hero-watermark" aria-hidden="true">GRT</div></section>;
 }
 
 export function CallToAction({ locale }: { locale: Locale }) {

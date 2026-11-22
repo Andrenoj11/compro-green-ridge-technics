@@ -1,9 +1,19 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { useMotionPreference } from "./motion-preference";
+
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { Check, ChevronDown, Globe2 } from "lucide-react";
 import { languageNames, languageTags, locales, t, url, type Locale } from "@/lib/i18n";
+import { AnimatePresence, motion, useIsPresent } from "motion/react";
+
+function LanguagePanel({ id, label, children, legacy }: { id: string; label: string; children: ReactNode; legacy: boolean }) {
+  const reduced = useMotionPreference();
+  const present = useIsPresent();
+  if (legacy) return present ? <nav id={id} className="language-picker-panel language-picker-legacy" aria-label={label}>{children}</nav> : null;
+  return <motion.nav id={id} className="language-picker-panel" aria-label={label} initial={{ opacity: 0, y: reduced ? 0 : -7, scale: reduced ? 1 : .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: reduced ? 0 : -4 }} transition={{ duration: reduced ? 0 : .16 }} inert={!present} aria-hidden={!present ? true : undefined}>{children}</motion.nav>;
+}
 
 export function LanguagePicker({ locale, path }: { locale: Locale; path: string }) {
   const [open, setOpen] = useState(false);
@@ -72,8 +82,8 @@ export function LanguagePicker({ locale, path }: { locale: Locale; path: string 
         </span>
         <ChevronDown size={14} aria-hidden="true" />
       </button>
-      {open && (
-        <nav id={panelId} className="language-picker-panel" aria-label={t(locale, "ui.language")}>
+      <AnimatePresence initial={false}>{open && (
+        <LanguagePanel id={panelId} label={t(locale, "ui.language")} legacy={!path}>
           <ul>
             {locales.map((language, index) => (
               <li key={language}>
@@ -95,8 +105,8 @@ export function LanguagePicker({ locale, path }: { locale: Locale; path: string 
               </li>
             ))}
           </ul>
-        </nav>
-      )}
+        </LanguagePanel>
+      )}</AnimatePresence>
     </div>
   );
 }

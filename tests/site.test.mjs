@@ -71,7 +71,20 @@ test('service SEO targets the approved areas and preserves the four company-prof
     assert.match(description, /Jabodetabek/);
     assert.match(description, /Batam/);
     assert.match(html, /name="robots"/);
-    assert.match(html, /Jabodetabek \(Jakarta, Bogor, Depok, Tangerang, dan Bekasi\)|management, inspection, system test, dan commissioning/);
+    const visibleContent = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+    assert.match(visibleContent, /Jabodetabek/);
+    assert.match(visibleContent, /Batam/);
+    const heading = visibleContent.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)[1];
+    if (!path) {
+      assert.match(heading, /Sebelum beroperasi/);
+      assert.match(visibleContent, /Jasa MEP|Jasa Inspeksi|Jasa Pengujian/);
+    } else assert.match(heading, /MEP|Commissioning/);
+    if (path.startsWith('services/')) {
+      assert.match(visibleContent, /Proses pelaksanaan/);
+      assert.match(visibleContent, /Persiapan sebelum membahas penawaran/);
+      assert.match(visibleContent, /<details class="faq-item">/);
+      assert.match(visibleContent, /href="\/id\/certifications"/);
+    }
     const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
     const organization = graph.find(item => item['@type'] === 'Organization');
     assert.deepEqual(organization.areaServed, ['Jabodetabek', 'Batam']);
@@ -105,6 +118,12 @@ test('image assets and accurate contact form instructions are available', async 
   const certificates = await (await get('/en/certifications')).text();
   assert.match(certificates, /Quality and professional standards/);
   assert.match(certificates, /Discuss the documentation and competency requirements/);
+  assert.match(certificates, /<h1>Quality &amp; Competency for MEP Services<\/h1>/);
+  assert.match(certificates, /Company documents/);
+  assert.match(certificates, /Personnel competency/);
+  assert.match(certificates, /Test traceability/);
+  const graph = JSON.parse(certificates.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
+  assert.equal(graph.find(item => item['@type'] === 'Organization').hasCredential, undefined);
   assert.doesNotMatch(certificates, /will be shown after|does not currently claim any certification/);
 });
 
@@ -119,6 +138,24 @@ test('all language JSON files have complete matching keys', async () => {
   }
   assert.match(catalogs[2]['content.pt_green_ridge_technics_is_a_company'], /[\u0600-\u06ff]/);
   assert.match(catalogs[3]['content.pt_green_ridge_technics_is_a_company'], /[\u4e00-\u9fff]/);
+});
+
+test('animation enhancement preserves visible server content and native controls', async () => {
+  for (const path of ['/id', '/en/services/testing', '/ar/certifications', '/zh/privacy']) {
+    const html = (await (await get(path)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
+    const heading = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/);
+    assert.ok(heading, path);
+    assert.doesNotMatch(heading[0], /opacity:\s*0(?:;|"|\s)|visibility:\s*hidden|display:\s*none/, path);
+    const menu = html.match(/<dialog\b[^>]*class="mobile-menu"[^>]*>/)[0];
+    assert.doesNotMatch(menu, /\sopen(?:[\s=>])/, path);
+  }
+  const gallery = (await (await get('/id/gallery')).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
+  const photos = [...gallery.matchAll(/<button\b[^>]*class="gallery-item"[^>]*>/g)];
+  assert.equal(photos.length, 4);
+  for (const [photo] of photos) assert.doesNotMatch(photo, /opacity:\s*0(?:;|"|\s)|visibility:\s*hidden|display:\s*none/);
+  assert.match(gallery, /aria-label="Foto sebelumnya"/);
+  assert.match(gallery, /aria-label="Foto berikutnya"/);
+  assert.doesNotMatch(gallery.match(/<dialog\b[^>]*class="lightbox"[^>]*>/)[0], /\sopen(?:[\s=>])/);
 });
 
 test('contact sending stays disabled without production configuration and never claims delivery', async () => {

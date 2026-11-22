@@ -30,7 +30,22 @@ The HTTP integration tests expect a running server at `http://localhost:3000`. S
 
 The About Us, vision, four mission points, director statement (Muhammad Zikri Pratama), and service scopes follow the supplied 2026 company profile. Project content is retained in the source, but its routes return 404 and its links are removed from the homepage, navigation, footer, metadata, and sitemap.
 
-Shared page layouts are in `components/pages.tsx`; the homepage is `components/home.tsx`. Visual styles and responsive breakpoints are in `app/globals.css`. Language switching preserves the current page. Arabic has a right-to-left layout; Mandarin uses Simplified Chinese. A native dialog provides the mobile menu and gallery lightbox; project and gallery filters work without a backend. CSS transitions and IntersectionObserver reveal effects respect `prefers-reduced-motion`.
+Shared page layouts are in `components/pages.tsx`; the homepage is `components/home.tsx`. Visual styles and responsive breakpoints are in `app/globals.css`. Language switching preserves the current page. Arabic has a right-to-left layout; Mandarin uses Simplified Chinese. A native dialog provides the mobile menu and gallery lightbox; project and gallery filters work without a backend.
+
+Motion (`motion` / `motion/react`) handles route entrances, viewport reveals,
+buttons, navigation, tabs, FAQ expansion, gallery layout, photo transitions,
+form feedback, and article reading progress. Anime.js draws the decorative
+engineering SVGs in the inner-page heroes, equipment cards, and quality
+documentation section. The two engines own separate elements. SVG sequences
+start on entering the viewport, run a finite number of times, and are reverted
+on unmount. Shared motion code is in `components/motion.tsx` and
+`components/engineering-motion.tsx`; `components/motion-preference.ts` observes
+live `prefers-reduced-motion` changes. Server-rendered content stays visible
+without animation scripts. Native dialog focus management, keyboard navigation,
+and the four-language SEO content are preserved. The homepage retains its
+original CSS hero/diagram/tab animations and IntersectionObserver reveals,
+including its original buttons, FAQ, and navigation behavior. Its SEO content
+remains intact; enhanced Motion/Anime.js effects apply to the other pages.
 
 ## Draft content and contact behavior
 

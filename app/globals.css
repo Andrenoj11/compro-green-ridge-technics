@@ -284,3 +284,72 @@ html[lang=zh] .about-page h1,html[lang=zh] .about-page h2{letter-spacing:0;line-
 .contact-trap{position:absolute;inset-inline-start:-10000px;width:1px;height:1px;overflow:hidden}
 .contact-verification{margin-block:18px;min-height:65px}
 .contact-fields:disabled{opacity:.8}
+
+/* Motion: shared interaction rhythm. Decorative SVGs are owned by Anime.js. */
+.header{transition:box-shadow .3s,background-color .3s,border-color .3s}
+.header-scrolled{background:rgba(248,249,245,.985);box-shadow:0 6px 28px #102e1b0c;border-color:#17352812}
+.desktop-nav>a.active:after{display:none}
+.nav-active-marker{position:absolute;inset-inline-start:0;bottom:22px;width:20px;height:3px;background:var(--forest);border-radius:2px}
+.reading-progress{position:fixed;inset:0 0 auto;height:3px;background:var(--lime);transform-origin:left;z-index:100;pointer-events:none}
+[dir=rtl] .reading-progress{transform-origin:right}
+.language-picker-panel{animation:none}
+.language-picker-panel.language-picker-legacy{animation:language-menu-enter .14s ease-out both}
+.header-legacy .desktop-nav>a.active:after{display:block}
+.home-page .article-card .article-image img{transition:transform .65s}
+.home-page .article-card:hover .article-image img{transform:scale(1.05)}
+.engineering-node{transform-box:fill-box;transform-origin:center}
+.engineering-accent{max-width:260px;width:100%;height:90px;margin-top:25px;pointer-events:none;color:#6b8b54;direction:ltr}
+.engineering-accent svg{display:block;width:100%;height:100%;overflow:visible}
+.engineering-accent .engineering-grid{stroke:currentColor;stroke-width:.5;opacity:.12}
+.engineering-accent .engineering-line{stroke:currentColor;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+.engineering-accent .engineering-signal{stroke:#7b9c48;stroke-width:2}
+.engineering-accent .engineering-node{fill:currentColor}
+.page-hero-context{min-width:0;max-width:400px}
+.page-hero-context>p{font-size:var(--text-body);color:#788772;padding-bottom:6px;max-width:360px}
+.page-hero-context .engineering-accent{height:65px;max-width:225px;margin-top:16px}
+.equipment-card .engineering-accent{height:55px;max-width:200px;margin:-10px 0 22px}
+.status-panel .engineering-accent{height:70px;margin:0}
+.service-card,.article-card,.equipment-card,.value-card{position:relative}
+.equipment-card{transition:background .3s,border-color .3s,box-shadow .3s}
+.equipment-card:hover{background:#edf2e7;border-color:#b9c9ac;box-shadow:0 10px 30px #17352809}
+.article-card .article-image img,.gallery-item img{transition:transform .65s cubic-bezier(.22,1,.36,1)}
+.article-card:hover .article-image img,.gallery-item:hover img{transform:scale(1.045)}
+.gallery-grid{position:relative;align-items:start}
+.gallery-filters button{position:relative;isolation:isolate;background:transparent;overflow:hidden}
+.gallery-filters button[aria-pressed=true]{background:transparent}
+.filter-selection{position:absolute;inset:0;z-index:-1;background:var(--forest)}
+.filter-label{position:relative}
+.lightbox-stage{position:relative;height:70dvh}
+.lightbox-stage .lightbox-image{height:100%;width:100%}
+.lightbox-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:18px}
+.lightbox-toolbar button{display:grid;place-items:center;width:44px;height:44px;flex:none;background:#ffffff0d;border:1px solid #ffffff30;color:#fff;transition:background .2s}
+.lightbox-toolbar button:hover{background:#ffffff20}
+.lightbox-toolbar p{text-align:center;line-height:1.6}
+.lightbox-toolbar p span{display:block;font-size:.75rem;color:#b3c5af;margin-top:5px}
+[dir=rtl] .lightbox-toolbar button svg{transform:scaleX(-1)}
+.contact-form input,.contact-form textarea,.contact-form select{transition:border-color .22s,box-shadow .22s,background-color .22s}
+.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{background:#fff;box-shadow:0 0 0 4px #6b8b5412}
+@media(max-width:700px){
+  .page-hero-context{max-width:none}
+  .page-hero-context>p{max-width:none}
+  .page-hero-context .engineering-accent{height:50px;max-width:185px;margin-top:12px}
+  .lightbox-stage{height:60dvh}
+  .lightbox-toolbar{gap:12px}
+  .engineering-accent{max-width:210px}
+}
+@media(prefers-reduced-motion:reduce){
+  .article-card .article-image img,.gallery-item img,.header,.equipment-card{transition:none}
+  .article-card:hover .article-image img,.gallery-item:hover img,.home-page .article-card:hover .article-image img{transform:none}
+}
+
+/* Service context and project documentation. */
+.coverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start}
+.coverage-copy p{color:var(--muted);margin-bottom:22px}
+.service-reading{margin-top:40px;border-top:1px solid var(--line);padding-top:24px}
+.service-reading h3{font-size:23px;margin-bottom:18px}
+.service-reading .text-link{align-items:flex-start;line-height:1.6}
+.service-reading .text-link svg,.sidebar-links a svg{flex:none}
+.quality-documents{padding-top:0}
+@media(max-width:700px){
+  .coverage-grid{grid-template-columns:1fr;gap:28px}
+}

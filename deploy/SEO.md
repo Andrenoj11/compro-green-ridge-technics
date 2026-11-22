@@ -84,6 +84,37 @@ References: [Google SEO guide](https://developers.google.com/search/docs/fundame
 
 ## Further preparation
 
+### Homepage, service pages, and quality documentation
+
+The homepage retains its original animated slogan and hero introduction at the
+owner's request. MEP services, Jabodetabek, and Batam remain in the metadata,
+visible service catalog, and coverage section. The four service pages explain when each
+service is useful, the proposed process, possible deliverables, information to
+prepare, and a service-specific FAQ. These explanations describe potential
+project scopes; they are not evidence of completed work or guaranteed outcomes.
+All changes are localized in the four catalogs and retain existing URLs.
+
+The owner confirmed that certification documents are still being requested.
+The existing `/certifications` route is therefore presented as **Quality &
+Competency** (Indonesian: **Mutu & Kompetensi**), with matching navigation,
+metadata, and visible content. It explains document review requirements for
+company credentials, personnel competency, and test traceability without
+asserting a certification, accreditation, or calibration status. No credential
+structured data is emitted.
+
+When documents arrive, verify the holder, issuer, scope, document number, and
+validity before publishing. Distinguish company credentials from individual
+qualifications and instrument calibration. Publish scans only when approved for
+public access. Keep the existing route to preserve its links.
+
+After deploying these content changes, inspect `/id`, the service index, the four
+service pages, and `/id/certifications` in Search Console. Record a baseline for
+non-brand queries containing `mep`, `inspection`/`inspeksi`, `testing`/`pengujian`,
+`commissioning`, `jabodetabek`, and `batam`; compare impressions, clicks, CTR, and
+average position over comparable date ranges. Query targets are hypotheses until
+the actual Search Console data is available. Local tests do not establish a
+Google ranking improvement.
+
 Add publishable project evidence, original photos, accurate technical explanations
 and case studies as supplied by the company. Google Business Profile can be considered if the
 business meets Google's in-person/service-area eligibility requirements. Phone

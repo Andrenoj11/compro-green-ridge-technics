@@ -44,9 +44,22 @@ export const profile = {
     m("content.upholding_a_strong_commitment_to_professional_standards")],
 };
 
+function serviceGuide(slug: "management" | "inspection" | "testing" | "commissioning") {
+  return {
+    overview: m(`service.${slug}.overview`),
+    when: m(`service.${slug}.when`),
+    process: m(`service.${slug}.process`),
+    outputs: m(`service.${slug}.outputs`),
+    prepare: m(`service.${slug}.prepare`),
+    question: m(`service.${slug}.question`),
+    answer: m(`service.${slug}.answer`),
+  };
+}
+
 export const services = [
   {
     slug: "management", number: "01", icon: "settings",
+    heading: m("seo.management.title"), guide: serviceGuide("management"),
     name: m("content.management_services"),
     tagline: m("content.focused_management_at_every_project_stage"),
     description: m("content.management_consultancy_for_project_delivery_commissioning_coordination"),
@@ -61,6 +74,7 @@ export const services = [
   },
   {
     slug: "inspection", number: "02", icon: "scan",
+    heading: m("seo.inspection.title"), guide: serviceGuide("inspection"),
     name: m("content.inspection_services"),
     tagline: m("content.attention_to_every_installation_and_item_of"),
     description: m("content.inspection_of_piping_installations_welding_cable_installations"),
@@ -76,6 +90,7 @@ export const services = [
   },
   {
     slug: "testing", number: "03", icon: "activity",
+    heading: m("seo.testing.title"), guide: serviceGuide("testing"),
     name: m("content.system_test_services"),
     tagline: m("content.system_performance_demonstrated_through_testing"),
     description: m("content.testing_for_piping_systems_mechanical_and_electrical"),
@@ -97,6 +112,7 @@ export const services = [
   },
   {
     slug: "commissioning", number: "04", icon: "settings",
+    heading: m("seo.commissioning.title"), guide: serviceGuide("commissioning"),
     name: m("content.commissioning_services"),
     tagline: m("content.system_readiness_from_function_to_integration"),
     description: m("content.commissioning_for_mechanical_electrical_fire_protection_plumbing"),
@@ -223,8 +239,8 @@ export const pageInfo: Record<
   },
   certifications: {
     eyebrow: m("content.quality_competence"),
-    title: m("content.confidence_is_built_on_evidence"),
-    description: m("content.a_commitment_to_documented_processes_professional_development"),
+    title: m("quality.heading"),
+    description: m("quality.description"),
   },
   careers: {
     eyebrow: m("content.careers_at_green_ridge"),

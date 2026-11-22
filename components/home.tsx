@@ -6,13 +6,15 @@ import { Photo, ButtonLink, TextLink, Eyebrow, SectionHeading, ServiceIcon, Call
 import { HomeHero, NeedsExplorer } from "./home-experience";
 
 export function HomePage({ locale }: { locale: Locale }) {
-  return <>
+  return <div className="home-page" data-home-motion="classic">
     <HomeHero locale={locale} />
     <NeedsExplorer locale={locale} />
 
     <section className="intro-section section" id="introduction"><div className="container intro-grid"><div data-reveal><Eyebrow>{t(locale, "home.your_engineering_partner")}</Eyebrow><h2>{text(m("home.reliable_systems_built_on_precision"),locale)}</h2></div><div className="intro-copy" data-reveal><p>{t(locale, "home.behind_every_facility_that_performs_well_is")}</p><p>{t(locale, "home.green_ridge_technics_helps_you_understand_verify")}</p><TextLink href={url(locale, "about")}>{t(locale, "home.about_green_ridge_technics")}</TextLink></div></div></section>
 
-    <section className="services-section section"><div className="container"><SectionHeading locale={locale} label={m("home.what_we_do")} title={m("home.expertise_that_connects")} description={m("seo.home.description")} href={url(locale, "services")} link={m("home.all_services")} /><div className="services-grid">{services.map(service => <Link href={url(locale, `services/${service.slug}`)} className="service-card" key={service.slug} data-reveal><div className="service-card-top"><ServiceIcon name={service.icon} /><span>{service.number}</span></div><h3>{text(service.name, locale)}</h3><p>{text(service.description, locale)}</p><div className="service-card-bottom"><span>{t(locale, "home.explore_expertise")}</span><ArrowUpRight size={23} /></div></Link>)}</div></div></section>
+    <section className="services-section section"><div className="container"><SectionHeading locale={locale} label={m("home.what_we_do")} title={m("seo.services.title")} description={m("seo.home.description")} href={url(locale, "services")} link={m("home.all_services")} /><div className="services-grid">{services.map(service => <Link href={url(locale, `services/${service.slug}`)} className="service-card" key={service.slug} data-reveal><div className="service-card-top"><ServiceIcon name={service.icon} /><span>{service.number}</span></div><h3>{text(service.heading, locale)}</h3><p>{text(service.description, locale)}</p><div className="service-card-bottom"><span>{t(locale, "home.explore_expertise")}</span><ArrowUpRight size={23} /></div></Link>)}</div></div></section>
+
+    <section className="section section-tinted"><div className="container coverage-grid"><div><Eyebrow>{t(locale, "coverage.title")}</Eyebrow><h2>{t(locale, "home.coverage_heading")}</h2></div><div className="coverage-copy"><p>{t(locale, "coverage.description")}</p><p>{t(locale, "home.coverage_copy")}</p><TextLink href={url(locale, "contact")}>{t(locale, "home.discuss_your_requirements")}</TextLink></div></div></section>
 
     <section className="sector-section"><div className="container sector-inner"><span className="mini-label">{t(locale, "home.expertise_across_sectors")}</span><div><Server size={25} strokeWidth={1.2} /><span>{t(locale,"content.data_centers")}</span></div><div><Building2 size={25} strokeWidth={1.2} /><span>{t(locale, "content.commercial_buildings")}</span></div><div><Factory size={25} strokeWidth={1.2} /><span>{t(locale, "content.industrial_facilities")}</span></div></div></section>
 
@@ -32,5 +34,5 @@ export function HomePage({ locale }: { locale: Locale }) {
       [m("home.what_does_the_verification_process_deliver"), m("home.deliverables_match_the_agreed_service_such_as")],
     ].map(([question, answer]) => <details className="faq-item" key={question.en}><summary>{text(question, locale)}<span aria-hidden="true" /></summary><p>{text(answer, locale)}</p></details>)}</div></div></section>
     <CallToAction locale={locale} />
-  </>;
+  </div>;
 }
