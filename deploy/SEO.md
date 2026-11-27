@@ -84,6 +84,23 @@ References: [Google SEO guide](https://developers.google.com/search/docs/fundame
 
 ## Further preparation
 
+### Site name in Google Search
+
+The preferred site name is **PT Green Ridge Technics**, with **Green Ridge
+Technics** as its recognized shorter alternative. Only the existing `WebSite`
+structured-data node specifies this preference. Organization data, Open Graph,
+application metadata, page titles, logo labels, and all visible website copy
+retain their previous values at the owner's request.
+
+The domain root redirects to `/id`. Google documents following the redirect
+target for site-name signals; the target includes `WebSite` data whose `url`
+points to the domain root. This identity is the same across all four languages.
+After deployment, use Search Console URL Inspection for
+`https://www.greenridgetechnics.com/` and its `/id` target, test live access, and
+request recrawling. Google chooses the displayed name automatically; publishing
+the markup cannot guarantee that it will choose the requested name or update
+immediately. See [Google's site-name guidance](https://developers.google.com/search/docs/appearance/site-names).
+
 ### Homepage, service pages, and quality documentation
 
 The homepage retains its original animated slogan and hero introduction at the

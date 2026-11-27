@@ -37,7 +37,16 @@ test('all 68 pages render meaningful, localized HTML and valid internal links', 
     assert.doesNotMatch(html, /Presentation version|Presentation mode|Illustrative photography|INFORMATION IN PREPARATION|coming here soon|Versi presentasi|Mode presentasi|Foto ilustrasi|INFORMASI DALAM PERSIAPAN|صور توضيحية|النسخة التعريفية|المعلومات قيد الإعداد|示意图片|展示版本|信息准备中/i, path);
     const schema = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
     assert.ok(schema, `${path}: structured data`);
-    assert.equal(JSON.parse(schema[1])['@graph'].find(item => item['@type'] === 'WebPage').inLanguage, locale);
+    const graph = JSON.parse(schema[1])['@graph'];
+    assert.equal(graph.find(item => item['@type'] === 'WebPage').inLanguage, locale);
+    const websites = graph.filter(item => item['@type'] === 'WebSite');
+    assert.equal(websites.length, 1, `${path}: one site identity`);
+    assert.equal(websites[0].name, 'PT Green Ridge Technics', path);
+    assert.equal(websites[0].alternateName, 'Green Ridge Technics', path);
+    assert.equal(new URL(websites[0].url).pathname, '/', `${path}: site identity uses the domain root`);
+    assert.equal(graph.find(item => item['@type'] === 'Organization').name, 'Green Ridge Technics', path);
+    assert.match(html, /property="og:site_name" content="Green Ridge Technics"/, path);
+    assert.match(html, /name="application-name" content="Green Ridge Technics"/, path);
     for (const [, href] of html.matchAll(/href="(\/[^"?#]*)"/g)) {
       if (/^\/(id|en|ar|zh)(\/|$)/.test(href)) assert.ok(routes.has(href), `${path}: broken internal link ${href}`);
     }
